@@ -48,6 +48,8 @@ $$
 
 ## From Homogeneous to Euclidean Coordinates
 **Homogeneous**
+- To make our homogeneous coordinates, we simply add an additional dimension and set that additional dimension to one
+- This can also be abstracted as $u$, $v$ and $w$ as shown below
 $$
 x = 
 \begin{bmatrix}
@@ -68,7 +70,9 @@ y \\
 1
 \end{bmatrix}
 $$
+
 **Euclidean**
+- This can also be reversed to get  the original Euclidean coordinates, as shown below
 $$
 \begin{bmatrix}
 u \\
@@ -92,9 +96,14 @@ x \\
 y
 \end{bmatrix}
 $$
+
+- What the below shows is that the bottom layer is the Euclidean coordinate space, and in the Homogeneous coordinate space it can be anywhere along the below diagonal line.
+- The reason why the coordinate in homogeneous coordinate space can be anywhere along this line is because of the $\lambda$ factor which is applied to the front of the matrix, meaning it can be any magnitude
+- When converted back to Euclidean, it will return back to its original position, as shown below.
 ![](Images/from-homogeneous-to-euclidean-coordinates.png)
 
 ## Center of the Coordinate System
+- As the title says, the center point of the coordinate system (depending on the dimensions you're using) centers around zero, with the last dimension being 1
 $$
 O_2 = 
 \begin{bmatrix}
@@ -127,6 +136,8 @@ $$
 
 ## 3D Points
 - Analogous for 3D points
+- Easy to map back and forth between two systems
+
 $$
 x = \overset{homogeneous}{
 \begin{bmatrix}
@@ -152,23 +163,28 @@ w/t
 \end{bmatrix}
 }
 $$
+
 ## Transformations
 - A projective transformation is an invertible linear mapping
 $$
 x' = Mx
 $$
+
 ### Important Transformations ($\mathbb{P}^3$)
 - General projective mapping
 $$
 x' = \underset{4 \times 4}{M}x
 $$
-- Translation (3 translations): 3 parameters
+### Translation (3 Translations): 3 Parameters
+- $I$ is a simple $3 \times 3$ identity matrix
+- $t$ is a translation vector along the $x$, $y$ and $z$ axes
+- $0$ is simple just a zero vector transposed
 ![](Images/important-transformations.png)
 
-- Rotation (3 rotation): 3 parameters
+### Rotation (3 Rotations): 3 Parameters
 ![](important-transformations2.png)
 
-## Recap - Rotation Matrices
+#### Recap - Rotation Matrices
 $$
 R^{2D}(\theta) =
 \begin{bmatrix}
@@ -203,16 +219,8 @@ $$
 $$
 R^{3D}(\omega, \phi, k) = R_z^{3D}(k)R_y^{3D}(\phi)R_x^{3D}(\omega)
 $$
-## Important Transformations ($\mathbb{P}^3$)
-- Rotation (3 rotation): 3 parameters
-$$
-M = 
-\begin{bmatrix}
-R & 0 \\
-0^T & 1
-\end{bmatrix}
-$$
-- Rigid body transformation (3 translation + 3 rotation): 6 params
+
+### Rigid Body Transformation (3 Translation + 3 Rotation): 6 Params
 $$
 M = \lambda
 \begin{bmatrix}
@@ -220,7 +228,7 @@ R & t \\
 0^T & 1
 \end{bmatrix}
 $$
-- Similarity transformation (3 trans + 3 rot + 1 scale): 7 params
+### Similarity Transformation (3 Trans + 3 Rot + 1 Scale): 7 Params
 $$
 M = \lambda
 \begin{bmatrix}
@@ -228,7 +236,7 @@ mR & t \\
 0^T & 1
 \end{bmatrix}
 $$
-- Affine transformation (3 trans + 3 rot + 3 scale + 3 sheer): 12 parameters
+### Affine Transformation (3 Trans + 3 Rot + 3 Scale + 3 Sheer): 12 Params
 $$
 M = \lambda
 \begin{bmatrix}
@@ -236,6 +244,7 @@ A & t \\
 0^T & 1
 \end{bmatrix}
 $$
+
 ## Transformations in $\mathbb{P}^2$
 ![](Images/transformations-in-p.png)
 
