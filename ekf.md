@@ -107,14 +107,14 @@ Random variables representing the process and measurement noise that are assumed
 ## Linear Motion Model
 - Motion under Gaussian noise leads to
 $$
-p(x_t|u_t, x_{t-1}) = \det(2\pi R_t)^{-\frac{1}{2}}\exp(-\frac{1}{2}(x_t - A_tx_{t-1} - B_tu_t)^T(x_t - A_tx_{t-1} - B_tu_t))
+p(x_t|u_t, x_{t-1}) = \det(2\pi R_t)^{-\frac{1}{2}}\exp \bigg(-\frac{1}{2}(x_t - A_tx_{t-1} - B_tu_t)^T(x_t - A_tx_{t-1} - B_tu_t)\bigg)
 $$
 - $R_t$ describes the noise of the motion 
 
 ## Linear Observation Model
 - Measuring under Gaussian noise leads to
 $$
-p(z_t|x_t) = \det(2\pi Q_t)^{-\frac{1}{2}}\exp(-\frac{1}{2}(z_t-C_tx_t)^TQt^{-1}(z_t-C_tx_t))
+p(z_t|x_t) = \det(2\pi Q_t)^{-\frac{1}{2}}\exp \bigg(-\frac{1}{2}(z_t-C_tx_t)^TQt^{-1}(z_t-C_tx_t)\bigg)
 $$
 - $Q_t$ describes the measurement noise
 
@@ -170,12 +170,50 @@ g(x) =
 \begin{pmatrix}
 g_1(x) \\
 g_2(x) \\
-... \\
+\vdots \\
 g_m(x)
 \end{pmatrix}
 $$
 - The **Jacobian matrix** is defined as
 $$
 G_x = 
-
+\begin{pmatrix}
+\frac{\partial g_1}{\partial x_1} & \frac{\partial g_1}{\partial x_2} &  ... & \frac{\partial g_1}{\partial x_n} \\
+\frac{\partial g_2}{\partial x_1} & \frac{\partial g_2}{\partial x_2} & ... & \frac{\partial g_2}{\partial x_n} \\
+\vdots & \vdots & \dots & \vdots \\
+\frac{\partial g_m}{\partial x_1} & \frac{\partial g_m}{\partial x_2} & \dots & \frac{\partial g_m}{\partial x_n}
+\end{pmatrix}
 $$
+
+## Reminder: Jacobian Matrix
+- It is the orientation of the tangent plane to the vector-valued function at a given point
+![](Images/reminder-jacobian-matrix.png)
+- Generalises the gradient of a scalar valued function
+
+## EKF Linearisation: First Order Taylor Expansion
+![](Images/first-order-taylor-expansion.png)
+
+## Linearity Assumption Revisited
+![](Images/linearity-assumption-revisited.png)
+
+## Non-Linear Function
+![](Images/non-linear-function.png)
+
+## EKF Linearisation (1)
+![](Images/ekf-linearisation-1.png)
+
+## EKF Linearisation (2)
+![](Images/ekf-linearisation-2.png)
+
+## EKF Linearisation (3)
+![](Images/ekf-linearisation-3.png)
+
+## Linearised Motion Model
+- The linearised model leads to
+$$
+p(z_t|x_t) =\det (2 \pi Q_t)^{-\frac{1}{2}} \exp \bigg(-\frac{1}{2}(z_t - h(\overline\mu_t)- H_t(x_t - \overline{\mu}_t))^TQ_t^{-1}(z_t - \underbrace{h(\overline{\mu}_t)-H_t(x_t-\overline{\mu}_t)}_{\text{linearised model}})\bigg)
+$$
+- $Q_t$ describes the measurement noise
+
+## Extended Kalman Filter Algorithm
+![](Images/ekf-algorithm.png)
