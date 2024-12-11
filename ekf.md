@@ -149,9 +149,13 @@ $$
 ![](non-linear-dynamic-systems.png)
 
 ## Linearity Assumption Revisited
+- We can use the RHS linear function to express the parameters $a$ for gradient and $b$ for bias for a Gaussian distribution
 ![](Images/linear-assumption-revisited.png)
 
 ## Non-Linear Function
+- In a non-linear function, we do not simply have an $a$ and $b$ parameter that we can use to express a Gaussian distribution
+- This leads to non-Gaussian distributions, as can be seen on the left
+- However a single point on the plot does have an $a$ and $b$ if we find the derivative
 ![](Images/non-linear-function.png)
 
 ## Non-Gaussian Distributions
@@ -192,26 +196,32 @@ $$
 ![](Images/reminder-jacobian-matrix.png)
 - Generalises the gradient of a scalar valued function
 
-## EKF Linearisation: First Order Taylor Expansion
-![](Images/first-order-taylor-expansion.png)
-
 ## Linearity Assumption Revisited
 ![](Images/linearity-assumption-revisited.png)
 
-## Non-Linear Function
+### Non-Linear Function
 ![](Images/non-linear-function.png)
 
-## EKF Linearisation (1)
+### EKF Linearisation (1)
+- Below shows the difference between the gaussian of the function and the EKF Gaussian through linearisation via Taylor Approximation
 ![](Images/ekf-linearisation-1.png)
 
-## EKF Linearisation (2)
+### EKF Linearisation (2)
+- However if the Gaussian distribution's covariance increases (i.e. the points recorded are far away from each other), then the difference between the EKF Gaussian distribution and the actual Gaussian distribution increases.
 ![](Images/ekf-linearisation-2.png)
 
-## EKF Linearisation (3)
+### EKF Linearisation (3)
+- If the covariance is very low (i.e. we have tightly bound recorded points), then the difference between the EKF Gaussian distribution and the actual Gaussian distribution is also very low.
 ![](Images/ekf-linearisation-3.png)
 
 ## Linearised Motion Model
 - The linearised model leads to
+$$
+p(x_t|u_t,x_{t-1}) \approx \det (2 \pi R_t)^{-\frac{1}{2}} \exp \bigg(-\frac{1}{2}(x_t - g(u_t, \mu_{t-1})- G_t(x_{t-1} - \mu_{t-1}))^TR_t^{-1}(x_t - \underbrace{g(u_t, \mu_{t-1})-G_t(x_{t-1}-\mu_{t-1})}_{\text{linearised model}})\bigg)
+$$
+- $R_t$ describes the noise of the motion
+
+## Linearised Observation Model
 $$
 p(z_t|x_t) =\det (2 \pi Q_t)^{-\frac{1}{2}} \exp \bigg(-\frac{1}{2}(z_t - h(\overline\mu_t)- H_t(x_t - \overline{\mu}_t))^TQ_t^{-1}(z_t - \underbrace{h(\overline{\mu}_t)-H_t(x_t-\overline{\mu}_t)}_{\text{linearised model}})\bigg)
 $$
