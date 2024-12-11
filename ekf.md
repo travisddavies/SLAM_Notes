@@ -50,7 +50,7 @@ p(x) = p(x_a, x_b) = \mathcal{N}(\mu, \Sigma)
 $$
 with
 $$
-\mu = \begin{pmatrix}\mu_a \\ \mu_b \end{pmatrix} \quad \Sigma = \begin{pmatrix} \Sigma_{aa} & \Sigma_{ab} \\ \Sigma_{ba} & \Sigma{bb} \end{pmatrix}
+\mu = \begin{pmatrix}\mu_a \\ \mu_b \end{pmatrix} \quad \Sigma = \begin{pmatrix} \Sigma_{aa} & \Sigma_{ab} \\ \Sigma_{ba} & \Sigma_{bb} \end{pmatrix}
 $$
 - The marginal distribution is 
 $$
@@ -60,7 +60,7 @@ with
 $$
 \mu = \mu_a \quad \Sigma = \Sigma_{aa}
 $$
-
+- This is just your simple marginalisation operation
 ## Conditioning
 - Given 
 $$
@@ -68,7 +68,7 @@ p(x) = p(x_a, x_b) = \mathcal{N}(\mu, \Sigma)
 $$
 with
 $$
-\mu = \begin{pmatrix}\mu_a \\ \mu_b \end{pmatrix} \quad \Sigma = \begin{pmatrix} \Sigma_{aa} & \Sigma_{ab} \\ \Sigma_{ba} & \Sigma{bb} \end{pmatrix}
+\mu = \begin{pmatrix}\mu_a \\ \mu_b \end{pmatrix} \quad \Sigma = \begin{pmatrix} \Sigma_{aa} & \Sigma_{ab} \\ \Sigma_{ba} & \Sigma_{bb} \end{pmatrix}
 $$
 - The conditional distribution is
 $$
@@ -81,6 +81,8 @@ $$
 $$
 \Sigma = \Sigma_{aa} - \Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba}
 $$
+- Note the complicated matrix operations for the last two expressions, these inverse operations are expensive to calculate on a computer
+- Also note the $\Sigma$ values, as $\Sigma_{*b}$ and $\Sigma_{b*}$ approach infinity (i.e. they have very low confidence in these recorded landmarks by not being seen very much), the influence that $b$ has over $a$ approaches zero
 
 ## Linear Model
 - The Kalman filter assumes a linear transition and observation model
@@ -96,7 +98,7 @@ $$
 Matrix $(n \times n)$ that describes how the state evolves from $t-1$ to $t$ without controls or noise
 
 ### $B_t$
-Matrix $(n \times l)$ that describes how the control $u_t$ changes the state from $t-$ to $t$
+Matrix $(n \times l)$ that describes how the control $u_t$ changes the state from $t-1$ to $t$
 
 ### $C_t$
 Matrix $(k \times n)$ that describes how to map the state $x_t$ to an observation $z_t$
