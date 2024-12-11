@@ -155,3 +155,9 @@ $$
 ![](Images/update_the_state_space.png)
 
 ## Extended Kalman Filter Algorithm
+![](Images/ekf_algorithm_3.png)
+
+## Update Covariance
+- The function $g$ only affects the robot's motion and not the landmarks
+![](Images/update_covariance.png)
+
