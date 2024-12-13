@@ -161,3 +161,70 @@ $$
 - The function $g$ only affects the robot's motion and not the landmarks
 ![](Images/update_covariance.png)
 
+## Jacobian of the Motion
+$$
+G_t^x = \frac{\partial}{\partial(x, y, \theta)^T}\Bigg[
+\begin{pmatrix}
+x \\
+y \\
+\theta
+\end{pmatrix}
++
+\begin{pmatrix}
+-\frac{v_t}{w_t}\sin \theta + \frac{v_t}{w_t} \sin(\theta + w_t \Delta t) \\
+\frac{v_t}{w_t} \cos \theta - \frac{v_t}{w_t} \cos (\theta + w_t \Delta t) \\
+w_t \Delta t
+\end{pmatrix}
+\Bigg]
+$$
+$$
+G_t^x = I + \frac{\partial}{\partial (x, y, \theta)^T} 
+\begin{pmatrix}
+-\frac{v_t}{w_t}\sin \theta + \frac{v_t}{w_t} \sin(\theta + w_t \Delta t) \\
+\frac{v_t}{w_t} \cos \theta - \frac{v_t}{w_t} \cos (\theta + w_t \Delta t) \\
+w_t \Delta t
+\end{pmatrix}
+$$
+$$
+G_t^x = I +
+\begin{pmatrix}
+0 & 0 & -\frac{v_t}{w_t} \cos \theta + \frac{v_t}{w_t}\cos (\theta + w \Delta t)\\
+0 & 0 & -\frac{v_t}{w_t} \sin \theta + \frac{v_t}{w_t} \sin(\theta + w_t \Delta t) \\
+0 & 0  & 0 \\
+\end{pmatrix}
+$$
+$$
+G_t^x =
+\begin{pmatrix}
+1 & 0 & -\frac{v_t}{w_t} \cos \theta + \frac{v_t}{w_t} \cos (\theta + w_t \Delta t)\\
+0 & 1 & - \frac{v_t}{w_t} \sin \theta + \frac{v_t}{w_t}\sin(\theta + w_t \Delta t)\\
+0 & 0 & 1\\
+\end{pmatrix}
+$$
+
+## This Leads to the Update
+![](Images/this_leads_to_the_update.png)
+
+## Extended Kalman Filter Algorithm
+![](Images/extended_kalman_filter_algorithm.png)
+
+## EKF SLAM: Prediction Step
+![](Images/ekf_slam_prediction_step.png)
+
+## Extended Kalman Filter Algorithm
+![](Images/extended_kalman_filter_algorithm.png)
+
+## EKF SLAM: Correction Step
+- Known data association
+- $c_t^i$: $i$-th measurement at time $t$ observes the landmark with index $j$
+- Initialise landmark if unobserved
+- Compute the expected observation
+- Compute the Jacobian of $h$
+- Proceed with computing the Kalman gain
+
+## Range-Bearing Observation
+- Range-Bearing observation $z_t^i = (r_t^i, \phi^i_t)^T$
+- If landmark has not been observed
+$$
+
+$$
