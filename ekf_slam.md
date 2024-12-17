@@ -22,7 +22,7 @@ m
 $$
 - Path of the robot
 $$
-x_{0:T} == \{x_0, x_1, x_2, \dots, x_T\}
+x_{0:T} = \{x_0, x_1, x_2, \dots, x_T\}
 $$
 
 ## Three Main Paradigms
@@ -74,19 +74,19 @@ $$
 4. Data association
 5. Update
 
-## EKF SLAM: State Prediction
+### EKF SLAM: State Prediction
 ![](Images/state_prediction2.png)
 
-## EKF SLAM: Measurement Prediction
+### EKF SLAM: Measurement Prediction
 ![](Images/measurement_prediction.png)
 
-## EKF SLAM: Obtained Measurement
+### EKF SLAM: Obtained Measurement
 ![](Images/obtained_measurement.png)
 
-## EKF SLAM: Data Association and Difference Between $h(x)$ and $z$
+### EKF SLAM: Data Association and Difference Between $h(x)$ and $z$
 ![](Images/data_association_and_difference.png)
 
-## EKF SLAM: Update Step
+### EKF SLAM: Update Step
 ![](Images/update_slam.png)
 
 ## EKF SLAM: Concrete Example
@@ -226,5 +226,265 @@ $$
 - Range-Bearing observation $z_t^i = (r_t^i, \phi^i_t)^T$
 - If landmark has not been observed
 $$
-
+\underset{
+	\begin{array}
+		\text{observed} \\
+		\text{location of} \\
+		\text{landmark } j
+	\end{array}
+}
+	{\begin{pmatrix}
+		\overline{\mu}_{j,x} \\
+		\overline{\mu}_{j,y}
+	\end{pmatrix}}
+=
+\underset{
+	\begin{array}
+	\text{estimated} \\
+	\text{robot's} \\
+	\text{location}
+	\end{array}
+}
+{\begin{pmatrix}
+	\overline{\mu}_{t,x} \\
+	\overline{\mu}_{t,y}
+\end{pmatrix}}
++
+\underset{
+	\begin{array}
+		\text{relative} \\
+		\text{measurement}
+	\end{array}
+}
+	{\begin{pmatrix}
+		r_t^i\cos(\phi_t^i + \overline{\mu}_{t,\theta}) \\
+		r_t^i \sin(\phi^i_t + \overline{\mu}_{t,\theta})
+	\end{pmatrix}}
 $$
+
+## Expected Observation
+- Compute expected observation according to the current estimate
+$$
+\begin{equation}
+\begin{split}
+\delta &= 
+\begin{pmatrix}
+\delta_x \\
+\delta_y 
+\end{pmatrix}
+=
+\begin{pmatrix}
+\overline{\mu}_{j,x} - \overline{\mu}_{t,x} \\
+\overline{\mu}_{j,y} - \overline{\mu}_{t,y}
+\end{pmatrix} \\
+q &= \delta^T\delta \\
+\hat{z}^i_t &= 
+\begin{pmatrix}
+\sqrt{q} \\
+\text{atan2}(\delta_y, \delta_x) - \overline{\mu}_{t,\theta}
+\end{pmatrix} \\
+\hat{z}_t^i &= h(\overline{\mu}_t)
+\end{split}
+\end{equation}
+$$
+
+## Jacobian for the Observation
+- Based on:
+$$
+\begin{equation}
+\begin{split}
+\delta &= 
+\begin{pmatrix}
+\delta_x \\
+\delta_y 
+\end{pmatrix}
+=
+\begin{pmatrix}
+\overline{\mu}_{j,x} - \overline{\mu}_{t,x} \\
+\overline{\mu}_{j,y} - \overline{\mu}_{t,y}
+\end{pmatrix} \\
+q &= \delta^T\delta \\
+\hat{z}^i_t &= 
+\begin{pmatrix}
+\sqrt{q} \\
+\text{atan2}(\delta_y, \delta_x) - \overline{\mu}_{t,\theta}
+\end{pmatrix} \\
+\hat{z}_t^i &= h(\overline{\mu}_t)
+\end{split}
+\end{equation}
+$$
+- Compute the Jacobian
+![](Images/low-dim-space.png)
+$$
+\text{low } H_t^i = \frac{\partial h (\bar{\mu}_t)}{\partial \bar{\mu}_t}
+= 
+\begin{pmatrix}
+\frac{\partial \sqrt{q}}{\partial x} & \frac{\partial \sqrt{q}}{\partial y} & \cdots \\[12pt]
+\frac{\partial \mathrm{atan2}(\dots)}{\partial x} & \frac{\partial \mathrm{atan2}(\dots)}{\partial y} & \cdots
+\end{pmatrix}
+	$$
+
+## The First Component
+- Based on:
+$$
+\begin{equation}
+\begin{split}
+\delta &= 
+\begin{pmatrix}
+\delta_x \\
+\delta_y 
+\end{pmatrix}
+=
+\begin{pmatrix}
+\overline{\mu}_{j,x} - \overline{\mu}_{t,x} \\
+\overline{\mu}_{j,y} - \overline{\mu}_{t,y}
+\end{pmatrix} \\
+q &= \delta^T\delta \\
+\hat{z}^i_t &= 
+\begin{pmatrix}
+\sqrt{q} \\
+\text{atan2}(\delta_y, \delta_x) - \overline{\mu}_{t,\theta}
+\end{pmatrix} \\
+\hat{z}_t^i &= h(\overline{\mu}_t)
+\end{split}
+\end{equation}
+$$
+- We obtain (by applying the chain rule)
+$$
+\begin{aligned}
+\frac{\delta \sqrt{q}}{\delta x} &=
+\frac{1}{2} \frac{1}{\sqrt{q}} 2 \delta_x(-1) \\
+\text{} &= \frac{1}{q}(-\sqrt{q}\delta_x)
+\end{aligned}
+$$
+
+## Jacobian for the Observation
+- Based on
+$$
+\begin{equation}
+\begin{split}
+\delta &= 
+\begin{pmatrix}
+\delta_x \\
+\delta_y 
+\end{pmatrix}
+=
+\begin{pmatrix}
+\overline{\mu}_{j,x} - \overline{\mu}_{t,x} \\
+\overline{\mu}_{j,y} - \overline{\mu}_{t,y}
+\end{pmatrix} \\
+q &= \delta^T\delta \\
+\hat{z}^i_t &= 
+\begin{pmatrix}
+\sqrt{q} \\
+\text{atan2}(\delta_y, \delta_x) - \overline{\mu}_{t,\theta}
+\end{pmatrix} \\
+\hat{z}_t^i &= h(\overline{\mu}_t)
+\end{split}
+\end{equation}
+$$
+- Compute the Jacobian
+$$
+\begin{aligned}
+\text{low } H_t^i &= \frac{\partial h (\bar{\mu}_t)}{\partial \bar{\mu}_t} \\
+&= \frac{1}{q} 
+\begin{pmatrix}
+-\sqrt{q} \delta_x & -\sqrt{q} \delta_y & 0 & 
+\sqrt{q}\delta_x & \sqrt{q}\delta_y \\
+\delta_y & \delta_x & -q & -\delta_y & \delta_x
+\end{pmatrix}
+\end{aligned}
+$$
+- Use the computed Jacobian
+$$
+\begin{aligned}
+\text{low } H_t^i &= \frac{\partial h (\bar{\mu}_t)}{\partial \bar{\mu}_t} \\
+&= \frac{1}{q} 
+\begin{pmatrix}
+-\sqrt{q} \delta_x & -\sqrt{q} \delta_y & 0 & 
+\sqrt{q}\delta_x & \sqrt{q}\delta_y \\
+\delta_y & \delta_x & -q & -\delta_y & \delta_x
+\end{pmatrix}
+\end{aligned}
+$$
+- Map it to the high dimensional space
+![](Images/map-to-high-dimensional-space.png)
+
+## Next Steps as Specified
+![](Images/next_steps_as_specified.png)
+
+## Extended Kalman Filter Algorithn
+![](Images/extended_kalman_filter_algorithm.png)
+
+## EKF SLAM - Correction (1/2)
+![](Images/ekf_slam_correction_1.png)
+
+## EKF SLAM - Correction (2/2)
+![](Images/ekf_slam_correction_2.png)
+
+## Implementation Notes
+- Measurement update in a single step requires only one full belief update
+- Always normalise the angular components
+- You may not neet to create the $F$ matrices explicitly (e.g. in Octave)
+
+## Loop Closing
+- Loop closing means recognising an already mapped area
+- Data association under
+	- High ambiguity
+	- Possible environment symmetries
+- Uncertainties **collapse** after a loop closure (whether the closure was correct or not)
+
+## Before the Loop Closure
+![](Images/before_the_loop_closure.png)
+
+## After the Loop Closure
+![](Images/after_the_loop_closure.png)
+
+## Loop Closure in SLAM
+- Loop closing **reduces** the uncertainty in robot and landmark estimates
+- This can be exploited when exploring an environment for the sake of better (e.g. more accurate) maps
+- **Wrong loop closures lead to filter divergence**
+
+## EKF SLAM Correlations
+- In the limit, the landmark estimates become **fully correlated**
+![](Images/ekf_slam_correlations.png)
+![](Images/ekf_slam_correlations2.png)
+![](Images/ekf_slam_correlations3.png)
+![](Images/ekf_slam_correlations4.png)
+
+## EKF SLAM Correlations
+- The correlation between the robot's pose and the landmarks **cannot** be ignored
+- Assuming independence generates too optimistic of the uncertainty
+
+## EKF SLAM Uncertainties
+- The **determinant** of any sub-matrix of the map covariance matrix **decrease monotonically**
+- New landmarks are initialised with **maximum uncertainty**
+![](Images/ekf_slam_uncertainties.png)
+
+## EKF SLAM in the Limit
+- In the limit, the covariance associated with any single landmark location estimate is determined is determined only by the initial covariance in the vehicle location estimate
+![](Images/ekf_slam_in_the_limit.png)
+
+## Example: Victoria Park Dataset
+![](Images/victoria_park_dataset.png)
+
+## Victoria Park: Data Acquisition
+![](Images/victoria_park_data_acquisition.png)
+
+## Victoria Park: EKF Estimate
+![](Images/victoria_park_ekf_estimate.png)
+
+## Victoria Park: Landmarks
+![](Images/victoria_park_landmarks.png)
+
+## Example: Tennis Court Dataset
+![](Images/example_tennis_court_dataset.png)
+
+## EKF SLAM on a Tennis Court
+![](Images/ekf_slam_on_a_tennis_court.png)
+
+## EKF SLAM Complexity
+- Cubic complexity depends only on the measurement dimensionality
+- Cost per step: dominated by the number of landmarks: $O(n^2)$
+- Memory consumption: $O(n^2)$
+-  The EKF becomes computationally intractable for large maps!
