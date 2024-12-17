@@ -61,6 +61,9 @@ $$
 ## EKF SLAM: State Representation
 - Map with $n$ landmarks: $(3+2n)$-dimensional Gaussian
 - Belief is represented by
+- Yellow represents the covariance matrix of the robot's pose
+- Blue represents the covariance matrix of the mapping
+- Greeen represents the correlation between the robot pose variance matrix and the mapping covariance matrix
 ![](Images/ekf_slam_state_representation.png)
 - More compactly
 ![](Images/more_compactly.png)
@@ -75,12 +78,18 @@ $$
 5. Update
 
 ### EKF SLAM: State Prediction
+- Below the white circle represents the robot, and the dashed line represents the trajectory of the robot in its environment.
+- The red ellipse around the robot represents the level of uncertainty about the robot's pose, which increases as he moves in his environment
+- Since the robot's movement in its world (if we don't assume that it doesn't bump and move anything) **will not influence the location of landmarks in the map**, we can say that the robot's movement will **only affect the green-highlighted areas in the below matrices**.
 ![](Images/state_prediction2.png)
 
 ### EKF SLAM: Measurement Prediction
+- This stage is basically the equivalent of saying "given my current pose, what sort of landmark should I measure?"
+- As can be seen by the highlighted star in the below diagram, the measurement prediction given the robot's pose is the star, with the red ellipse representing its uncertainty level
 ![](Images/measurement_prediction.png)
 
 ### EKF SLAM: Obtained Measurement
+
 ![](Images/obtained_measurement.png)
 
 ### EKF SLAM: Data Association and Difference Between $h(x)$ and $z$
