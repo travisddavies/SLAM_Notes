@@ -155,7 +155,7 @@ $$
 - History of SLAM dates back to the mid-eighties
 - Related problems in geodesy and photogrammetry
 
-SLAM History by Durrant-Whyte
+## SLAM History by Durrant-Whyte
 - 1985/86: Smith et al. and Durrant-Whyte describe geometric uncertainty and relationships between features and relationships between features and relationships between features or landmarks
 - 1986: Discussion at ICRA on how to solve the SLAM problem followed by the key paper by Smith, Self and Cheeseman
 - 1990-95: Kalman-filter based approaches

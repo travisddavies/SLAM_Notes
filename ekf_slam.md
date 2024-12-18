@@ -89,13 +89,15 @@ $$
 ![](Images/measurement_prediction.png)
 
 ### EKF SLAM: Obtained Measurement
-
+- This is the actual measurement that the robot received
 ![](Images/obtained_measurement.png)
 
 ### EKF SLAM: Data Association and Difference Between $h(x)$ and $z$
+- We need to find which landmark this measurement belongs to, and the difference between the predicted and measured landmark
 ![](Images/data_association_and_difference.png)
 
 ### EKF SLAM: Update Step
+- Once we have completed all the above steps, we can then update the state matrix for correction
 ![](Images/update_slam.png)
 
 ## EKF SLAM: Concrete Example
@@ -161,9 +163,11 @@ w_t \Delta t
 \end{pmatrix}
 $$
 - to the $2N+3$ dimensional space
+- the first three columns are an identity matrix, and the last $2N$ columns are all zeros
 ![](Images/update_the_state_space.png)
 
 ## Extended Kalman Filter Algorithm
+- First line now complete
 ![](Images/ekf_algorithm_3.png)
 
 ## Update Covariance
@@ -233,6 +237,7 @@ $$
 
 ## Range-Bearing Observation
 - Range-Bearing observation $z_t^i = (r_t^i, \phi^i_t)^T$
+- Range-bearing observation is to do with the relative coordinates in terms of angle and distance from a certain zero coordinate and angle
 - If landmark has not been observed
 $$
 \underset{
@@ -361,12 +366,29 @@ $$
 - We obtain (by applying the chain rule)
 $$
 \begin{aligned}
-\frac{\delta \sqrt{q}}{\delta x} &=
+\frac{\partial \sqrt{q}}{\partial x} &=
 \frac{1}{2} \frac{1}{\sqrt{q}} 2 \delta_x(-1) \\
 \text{} &= \frac{1}{q}(-\sqrt{q}\delta_x)
 \end{aligned}
 $$
-
+- In-depth derivation:
+	- Remember chain rule: $\frac{\partial f(g)}{\partial x} = f'(g) \cdot g'(x)$ 
+$$
+\begin{aligned}
+	\frac{\partial \sqrt{q}}{\partial x} &= \frac{1}{2\sqrt{q}} \cdot \frac{\partial q}{\partial x} \\
+	q &= \delta^T \delta\\
+	q &= \delta_x^2 + \delta_y^2 \\
+	\frac{\partial q}{\partial x} &= 2\delta_x \cdot \frac{\partial \delta_x}{\partial x} \\
+	\delta_x & = \overline{\mu}_{j,x} - \overline{\mu}_{t,x} \\
+	\frac{\partial \delta_x}{\partial x} &= -1 \\
+	\frac{\partial \sqrt{q}}{\partial x} &= \frac{1}{2\sqrt{q}} \cdot 2 \delta_x \cdot -1 \\
+	\frac{\partial \sqrt{q}}{\partial x} &= \frac{-1}{\sqrt{q}} \cdot  \delta_x \\
+	\frac{1}{\sqrt{q}} \cdot \frac{\sqrt{q}}{\sqrt{q}} &= \frac{\sqrt{q}}{q} \\
+	\frac{\partial \sqrt{q}}{\partial x} &= \frac{1}{q}(-\sqrt{q}\delta_x)
+\end{aligned}
+$$
+- This will repeat for all of $\{x, y, \theta, m_{j,x}, m_{j,y}\}$
+- Note that for $\{m_{j,x}, m_{j,y}\}$, the $\overline{\mu}_{j,x}$ and $\overline{\mu}_{j,y}$ will be set to 1 rather than 0 like in the above derivation
 ## Jacobian for the Observation
 - Based on
 $$
@@ -393,6 +415,7 @@ q &= \delta^T\delta \\
 \end{equation}
 $$
 - Compute the Jacobian
+- This just goes through the process of what we showed above, note that the last two columns are the opposite value, this is because the opposite value in the $\delta_x$ and $\delta_y$ were derived (as shown in the above derivation)
 $$
 \begin{aligned}
 \text{low } H_t^i &= \frac{\partial h (\bar{\mu}_t)}{\partial \bar{\mu}_t} \\
@@ -471,7 +494,7 @@ $$
 ![](Images/ekf_slam_uncertainties.png)
 
 ## EKF SLAM in the Limit
-- In the limit, the covariance associated with any single landmark location estimate is determined is determined only by the initial covariance in the vehicle location estimate
+- In the limit, the covariance associated with any single landmark location estimate is determined only by the initial covariance in the vehicle location estimate
 ![](Images/ekf_slam_in_the_limit.png)
 
 ## Example: Victoria Park Dataset

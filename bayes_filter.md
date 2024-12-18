@@ -107,6 +107,8 @@ $$
 ## Motion Equation
 - Robot moves from $(x,y, \theta)$ to $(x', y', \theta')$
 - Velocity information $u = (v, w)$
+- $v$ represents linear velocity
+- $w$ represents angular velocity
 $$
 \begin{pmatrix}
 x' \\
