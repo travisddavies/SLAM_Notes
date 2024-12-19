@@ -12,8 +12,12 @@
 Linearisation of the non-linear function through Taylor expansion
 
 ## Unscented Transform
+- We sample some points according to an existing Gaussian distribution
 ![](Images/taylor_expansion1.png)
+- We then remap those points to a new Gaussian distribution, transformed by a non-linear function
 ![](Images/unscented_transform.png)
+- Calculate the new Gaussian distribution from the transformed points
+- This is done by calculating the mean and covariance of the new points to get the new Gaussian distribution
 ![](Images/unscented_transform1.png)
 
 ## Unscented Transform Overview
@@ -39,6 +43,10 @@ $$
 	\Sigma &= \sum_i w^{[i]}(\mathcal{X}^{[i]} - \mu)(\mathcal{X}^{[i]} - \mu)^T	
 \end{align}
 $$
+- What this means is the following:
+	- The sum of weights $w$ must be equal to 1
+	- The sum of weighted $\mathcal{X}$ must equal to the mean
+	- The weighted sum of squared difference between the $\mathcal{X}$ and $w$ must equal to covariance
 - There is no unique solution for $\mathcal{X}^{[i]},w^{[i]}$
 
 ## Sigma Points
