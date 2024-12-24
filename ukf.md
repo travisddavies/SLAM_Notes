@@ -133,10 +133,10 @@ $$
 \end{aligned}
 $$
 
-## Example
+### Example
 ![](Images/an_ukf_example.png)
 
-## Examples
+### Examples
 ![](Images/ukf_examples.png)
 
 ## Unscented Transform Summary
@@ -185,6 +185,7 @@ $$
 \begin{align}
 \Sigma_t &= (I - K_t H_t) \overline{\Sigma}_t \\
 &= \overline{\Sigma}_t - K_t \underbrace{H_t \overline{\Sigma}_t}_{simplify} \\
+&= \overline{\Sigma}_t - K_t (\overline{\Sigma}^{x,z})^T \\
 &= \overline{\Sigma}_t - K_t (\underbrace{\overline{\Sigma}^{x,z}S_t^{-1}}_{simplify}S_t)^T \\
 &= \overline{\Sigma}_t - K_t(K_t S_t)^T \\
 &= \overline{\Sigma}_t - K_tS_t^TK_t^T \\
@@ -203,4 +204,3 @@ $$
 
 ## UKF vs. EKF
 ![](Images/ukf_vs_ekf.png)
-
