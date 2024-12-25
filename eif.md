@@ -46,6 +46,8 @@ p(x) = \det(2\pi\Sigma)^{-\frac{1}{2}}\exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\m
 $$
 
 ## Marginalisation and Conditioning
+- Marginalisation is easy - just simply cut out a section of the matrix
+- Conditioning is hard - requires  cutting out a section of the matrix and then inverting it (expensive computationally!)
 ![](Images/marginalisation_and_conditioning.png)
 
 ## From the Kalman Filter to the Information Filter
@@ -82,6 +84,8 @@ $$
 
 ## Correction Step
 - Use the Bayes filter measurement update and replace the components
+- Observation model (first part) is multiplied with the predicted belief (check Kalman filter for refresher)
+- The final claim we can trace back to our original derivation of the information filter (see at the top of the notes)
 $$
 \begin{align}
 	bel(x_t) &= \eta p(z_t|x_t)\overline{bel}(x_t) \\
@@ -172,6 +176,6 @@ $$
 - The EIF is the EKF in information form
 - Complexities of the prediction and correction steps can differ 
 - Same expressiveness than the EKF
-- Unscented transform mcan also be used
+- Unscented transform mean also be used
 - Reported to be numerically more stable than the EKF
 - In practice, the EKF is more popular than the EIF
