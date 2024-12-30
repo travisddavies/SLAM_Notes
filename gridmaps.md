@@ -63,3 +63,12 @@
 ![](Images/estimating-from-sensor-data.png)
 
 ## Static State Binary Bayes Filter
+![](Images/state-static-bayes-filter.png)
+![](Images/state-static-bayes-filter-1.png)
+![](Images/state-static-bayes-filter-2.png)
+![](Images/state-static-bayes-filter-3.png)
+![](Images/state-static-bayes-filter-4.png)
+![](Images/state-static-bayes-filter-5.png)
+![](Images/state-static-bayes-filter-6.png)
+![](Images/state-static-bayes-filter-6.png)
+![](Images/state-static-bayes-filter-8.png)
