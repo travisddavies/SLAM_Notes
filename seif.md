@@ -182,5 +182,183 @@ $$
 ### Compute the Information Vector
 - We obtain the information vector by 
 $$
-\overline{\xi}_t
+\begin{align}
+	\overline{\xi}_t &= \overline{\Omega}_t (\mu_{t-1}+F^T_x\delta_t) \\
+	&= \overline{\Omega}(\Omega^{-1}_{t-1} \xi_{t-1} + F_x^T \delta_t) \\
+	&= \overline{\Omega}_t \Omega^{-1}_{t-1} \xi_{t-1} + \overline{\Omega}_t F_x^T \delta_t \\
+	&= (\overline{\Omega} \underbrace{- \Phi_t + \Phi_t - \Omega_{t-1} + \Omega_{t-1}}_{=0})\Omega^{-1}_{t-1} \xi_{t-1} + \overline{\Omega}_t F_x^T\delta_t \\
+	&= (\underbrace{\overline{\Omega}_t - \Phi_t}_{= -\kappa_t} + \underbrace{\Phi_t - \Omega_{t-1}}_{= \lambda_t})\underbrace{\Omega_{t-1}^{-1}\xi_{t-1}}_{\mu_{t-1}}+\underbrace{\Omega_{t-1}\Omega^{-1}_{t-1}}_{=I}\xi_{t-1}+\overline{\Omega}_tF_x^T\delta_t \\
+	&= \xi_{t-1} + (\lambda_t - \kappa_t) \mu_{t-1} + \overline{\Omega}_t F_x^T \delta_t
+\end{align}
 $$
+
+## SEIF - Prediction Step (3/3)
+![](Images/seif-prediction3.png)
+
+## Four Steps of SEIF SLAM
+![](Images/four_steps_seif_slam5.png)
+
+## SEIF - Measurement (1/2)
+![](Images/seif_measurement1.png)
+
+## SEIF - Measurement (2/2)
+![](Images/seif_measurement2.png)
+
+## Four Steps of SEIF SLAM
+![](Images/four_steps_seif_slam6.png)
+
+## Recovering the Mean
+The mean is needed for
+- Linearised motion model (pose)
+- Linearised measurement model (pose and visible landmarks)
+- Sparsification step (pose and subset of the landmarks)
+
+- In the motion update step, we can compute the predicted mean easily
+![](Images/recovering_the_mean.png)
+
+- Computing the corrected mean, however, **cannot be done as easy**
+- Computing the mean from the information vector is costly:
+$$
+\mu = \Omega^{-1}\xi
+$$
+- Thus, SEIF SLAM approximates the computation for the corrected mean
+
+## Approximation of the Mean
+- Compute a **few dimensions** of the mean in an approximated way
+- Idea: Treat that as an optimsation problem and seek to find
+$$
+\begin{align}
+	\hat{\mu} &= \text{argmax}p(\mu) \\
+	&= \underset{\mu}{\text{argmax}} \exp(-\frac{1}{2}\mu^T\Omega\mu+\xi^T\mu)
+\end{align}
+$$
+- Seeks to find the value that maximise the probability density function
+
+- Derive function
+- Set first derivative to zero
+- Solve equation(s)
+- Iterate
+
+- Can be done effectively given that only a few dimensions of $\mu$ are needed (robot's pose and active landmarks)
+
+## Four Steps of SEIF SLAM
+![](Images/four_steps_seif_slam7.png)
+
+## Sparsification
+- In order to perform all previous computations efficiently, we assumed a **sparse information matrix**
+- Sparsification step ensures that
+- **Question**: what does sparsifying the information matrix mean?
+- It means "ignoring" some direct links 
+- Assuming conditional independence
+![](Images/sparsification5.png)
+
+## Sparsification in General
+- Replace the distribution
+$$
+p(a,b,c)
+$$
+- by an approximation $\tilde{p}$ so that $a$ and $b$ are independent given $c$
+$$
+\begin{align}
+\tilde{p}(a|b,c) =p(a|c) \\
+\tilde{p}(b|a,c) = p(b|c)
+\end{align}
+$$
+
+## Approximation by Assuming Conditional Independence
+- This leads to
+![](Images/approximation.png)
+
+## Sparsification in SEIFs
+- Goal: approximate $\Omega$ so that it is and stays sparse
+- Realised by maintaining only links between the robot and a few landmarks
+- This also limits the number of links between landmarks
+
+## Limit Robot-Landmark Links
+- Consider a set of **active landmarks** during the updates
+![](Images/limit_robot.png)
+
+### Active and Passive Landmarks
+#### Active Landmarks
+- A subset of all landmarks
+- Includes the currently observed ones
+
+#### Passive Landmarks
+- All others
+
+## Sparsification Considers Three Sets of Landmarks
+- Active ones that stay active
+- Active ones that become passive
+- Passive ones
+$$
+m = \underset{\text{active}}{m^+} + \underset{\text{active to passive}}{m^0} + \underset{\text{passive}}{m^-}
+$$
+
+## Sparsification
+- Remove links between robot's pose and active landmarks that become passive
+- Equal to conditional independence given the other landmarks
+- No change in the links of passive ones
+- **Sparsification is an approximation!**
+$$
+\begin{align}
+p(x_t, m| z_{1:t}, u_{1:t}) &= p(x_t, m^+, m^0, m^-|z_{1:t}, u_{1:t}) \\
+&\approx \dots
+\end{align}
+$$
+- Dependencies from $z, u$ not shown:
+![](Images/sparsification6.png)
+![](Images/sparsification7.png)
+![](Images/sparsification8.png)
+
+## Information Matrix Update
+- Sparsifying the direct links between the robot's pose and $m^0$ results in
+![](Images/information_matrix.png)
+
+## Sparsified Information Matrix
+$$
+\tilde{p}(x_t, m|z_{1:t}, u_{1:t}) \approx \frac{p(x_t, m^+ | m^- = 0, z_{1:t}, u_{1:t})}{p(m^+| m^- = 0, z_{1:t}, u_{1:t})}p(m^0, m^+, m^-|z_{1:t}, u_{1:t})
+$$
+- Conditioning $\Omega_t$ on $m^- = 0$ yields $\Omega_t^0$
+- Marginalising $m^0$ from $\Omega^0_t$ yields $\Omega^1_t$
+- Marginalising $x, m^0$ from $\Omega_t$ yields $\Omega_t^3$
+- Computing sparsified information matrix
+$$
+\tilde{\Omega}_t = \Omega^1_t - \Omega^2_t + \Omega^3_t
+$$
+
+## Information Vector Update
+- The information vector can by recovered directly by:
+$$
+\begin{align}
+	\tilde{\xi}_t &= \tilde{\Omega}_t \mu_t \\
+	&= (\Omega_t - \Omega_t + \tilde{\Omega}_t)\mu_t \\
+	&= \xi_t + (\tilde{\Omega}_t - \Omega_t)\mu_t
+\end{align}
+$$
+
+## Sparsification
+![](Images/sparsification9.png)
+
+## Four Steps of SEIF SLAM
+![](Images/four_steps_seif_slam8.png)
+
+## Effect of the Sparsification
+![](Images/effect_of_sparsification.png)
+
+## SEIF SLAM vs. EKF SLAM
+- Roughly **constant time** complexity vs. quadratic complexity of the EKF
+- **Linear memory** complexity vs. quadratic complexity of the EKF
+- SEIF SLAM is **less accurate** than EKF SLAM (sparsification, mean recovery)
+
+## SEIF & EKF: CPU Time
+![](Images/cpu_time.png)
+
+## SEIF & EKF: Memory Usage
+![](Images/memory_usage.png)
+
+## SEIF & EKF: Error Comparison
+![](Images/error_comparison.png)
+
+## Influence of the Active Features
+![](Images/influence.png)
+![](Images/influence2.png)
