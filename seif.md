@@ -4,11 +4,15 @@
 
 ## Motivation
 ![](Images/seif-motivation.png)
-
-## Motivation
+- Look at the normalised information matrix, notice how it contains many values that are very close to zero (white spaces)
+- The intuition is, what if we create a technique that sets many of these values to zero, thus creating a sparse matrix?
+- This technique will heavily boost our computational efficiency
 ![](Images/seif-motivation-2.png)
 
 ## Most Features Have Only a Small Number of Strong Links
+- We can interpret the matrix as a graph
+- Nodes with a darker colour indicates that there is a link between the robot's pose and this node (i.e. landmark). The darker the colour, the more information that this node contains about the robot's pose
+- Active features are features that the robot is currently observing or is having a direct influence on  measurement of the robot's pose
 ![](Images/features-small-links.png)
 
 ## Information Matrix
