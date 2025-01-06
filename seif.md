@@ -29,13 +29,19 @@
 - **Sparse** = finite number of non-zero off-diagonals, independent of the matrix size
 
 ## Effect of Measurement Update on the Information Matrix
+- First step is just the initial robot pose $x_t$
 ![](Images/effect-information-matrix.png)
-![](Images/effect-information-matrix.png)
+- Next step is that we observe landmark 1 $m_1$, so we colour-in the $x_t, m_1$ squares
+![](Images/effect-information-matrix0.png)
+- The next step is that the robot also observes the next landmark $m_2$, however $m_2$ and $m_1$ are at this step independent from each other. Thus we colour in these landmark's connections to $x_t$, but not the connections between each other.
 ![](Images/effect-information-matrix3.png)
 - Adds information between the robot's pose and the observed feature
+- We therefore are left with the following matrix
 ![](Images/effect-information-matrix4.png)
 
 ## Effect of Motion Update on the Information Matrix
+- When a robot takes a move to $x_{t+1}$, it adds uncertainty to where its position is, and as a result of performing marginalisation on the pose and landmarks, the landmarks $m_1,m_2$ become conditionally dependent on one another, as shown in the pictures below.
+- Another thing to also notice is that the links between the landmarks and the robot pose actually get weaker in this process, and the links between the two landmarks actually gets stronger. This is because of the uncertainty added to the robot pose when the robot moves, and to get information about landmark $m_1$, we also rely on information about landmark $m_2$
 ![](Images/effect-information-matrix5.png)
 ![](Images/effect-information-matrix6.png)
 ![](Images/effect-information-matrix7.png)
@@ -43,9 +49,11 @@
 - Add links between landmarks
 
 ## Sparsification
+- What we do here is actually remove the link between the robot pose and one of the landmarks, in this case being $m_1$
 ![](Images/sparsification.png)
 ![](Images/sparsification1.png)
 ![](Images/sparsification2.png)
+- By doing this some of the information contained between $x_t$ and $m_1$ actually gets absorbed by the $m_2$ links
 ![](Images/sparsification3.png)
 - Sparsification means "ignoring" links (assuming conditional independence)
 - Here: links between the robot's pose and some of the features
