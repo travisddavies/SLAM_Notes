@@ -57,6 +57,7 @@
 ![](Images/sparsification3.png)
 - Sparsification means "ignoring" links (assuming conditional independence)
 - Here: links between the robot's pose and some of the features
+- We will lose accuracy in doing this process, but we will gain in computational efficiency
 ![](Images/sparsification4.png)
 
 ## Active and Passive Landmarks
@@ -68,7 +69,13 @@ Key element of SEIF SLAM to obtain an efficient algorithm
 **Passive Landmarks**
 - All others
 
+- What this means is that during our process, we only maintain direct links with the active landmarks, which will just be a tiny subset of all the total landmarks present
+
 ## Active vs. Passive Landmarks
+- Below is a demonstration of active and passive landmarks
+	- $m_1$ was once active and is now passive
+	- $m_2$ is currently still active
+	- $m_3$ is passive because it has no direct links to $x_t$, since it has not yet been observed
 ![](Images/active_vs_passive_landmarks.png)
 
 ## Sparsification in Every Step
@@ -80,8 +87,8 @@ Key element of SEIF SLAM to obtain an efficient algorithm
 
 ## Four Steps of SEIF SLAM
 ![](Images/four_steps_seif_slam.png)
+- The corrected mean $\mu_t$ is estimated after the measurement update of the canonical $\xi_t$, $\Omega_t$ parameters
 ![](Images/four_steps_seif_slam2.png)
-![](Images/four_steps_seif_slam3.png)
 ![](Images/four_steps_seif_slam4.png)
 
 ## Matrix Inversion Lemma
@@ -90,6 +97,7 @@ Key element of SEIF SLAM to obtain an efficient algorithm
 $$
 (R+PQP^T)^{-1} = R^{-1}-R^{-1}P(Q^{-1}+P^T R^{-1} P)^{-1}P^T R^{-1}
 $$
+- What this means is that if we can calculate $R^{-1}$ efficiently, then we can minimise the cost of inverting matrices by only inverting $R$, and thus replacing the other matrices as the following formula shows. Making it very efficient!
 
 ## SEIF SLAM - Prediction Step
 - Goal: Compute $\overline{\xi}_t, \overline{\Omega}_t, \overline{\mu}_t$ from motion and the previous estimate $\xi_{t-1}, \Omega_{t-1}, \mu_{t-1}$ 
@@ -133,11 +141,14 @@ $$
 \end{align}
 $$
 - Question: Can we compute $\Phi_t$ efficiently ($\Phi_t = [G_t^T]^{-1}\Omega_{t-1}G_t^{-1}$)?
+	- Yes! if it is sparse
 
 ### Computing $\Phi_t = [G_t^T]^{-1} \Omega_{t-1} G_t^{-1}$ 
 - Goal: constant time if $\Omega_{t-1}$ is sparse
 ![](Images/computing.png)
 ![](Images/computing_2.png)
+- Here we pulled out the $I_{3}$ and $I_{2N}$ matrices and put them in the front
+- This can be simplified to the bottom equation
 ![](Images/computing_3.png)
 - We have
 $$
@@ -237,7 +248,7 @@ $$
 
 ## Approximation of the Mean
 - Compute a **few dimensions** of the mean in an approximated way
-- Idea: Treat that as an optimsation problem and seek to find
+- Idea: Treat that as an optimisation problem and seek to find
 $$
 \begin{align}
 	\hat{\mu} &= \text{argmax}p(\mu) \\
