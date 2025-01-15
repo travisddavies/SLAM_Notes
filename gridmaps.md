@@ -67,14 +67,15 @@
 ![](Images/state-static-bayes-filter-1.png)
 ![](Images/state-static-bayes-filter-2.png)
 ![](Images/state-static-bayes-filter-3.png)
+- Here we can remove the $x_t$ because knowing the robot pose doesn't help at all with knowing the gridmap
 ![](Images/state-static-bayes-filter-4.png)
 ![](Images/state-static-bayes-filter-5.png)
 ![](Images/state-static-bayes-filter-6.png)
-![](Images/state-static-bayes-filter-6.png)
+![](Images/state-static-bayes-filter-7.png)
 ![](Images/state-static-bayes-filter-8.png)
 
 ## From Ratio to Probability
-- We can easily turn the ration into the probability
+- We can easily turn the ration into the probability (note: this is a common rule in maths)
 $$
 \begin{align}
 \frac{p(x)}{1-p(x)} &= Y \\
@@ -86,7 +87,7 @@ p(x) &= \frac{1}{1+\frac{1}{Y}}
 $$
 
 ## From Ratio to Probability
-- Using $p(x) = [1+Y^{-1}]^{-1}$ directly leads to
+- Using $p(x) = [1+Y^{-1}]^{-1}$ (the outcome in the above section) directly leads to
 
 $$
 p(m_i|z_{1:t},x_{1:t}) = \Bigg[1 + \frac{1-p(m_i|z_t,x_t)}{p(m_i|z_t, x_t)}\frac{1-p(m_i|z_{1:t-1}, x_{1:t-1})}{p(m_i|z_{t-1},x_{1:t-1})}\frac{p(m_i)}{1-p(m_i)}\Bigg]^{-1}
@@ -98,6 +99,7 @@ $$
 $$
 p(m_i|z_{1:t},x_{1:t}) = \underbrace{\frac{p(m_i|z_t,x_t)}{1-p(m_i|z_t, x_t)}}_{\text{uses }z_t}\underbrace{\frac{p(m_i|z_{1:t}, x_{1:t-1})}{1-p(m_i|z_{1:t-1}, x_{1:t-1})}}_{\text{recursive term}}\underbrace{\frac{1-p(m_i)}{p(m_i)}}_{\text{prior}}
 $$
+- This below is simply the log of the above formula
 $$
 \rightarrow l(m_i|z_{1:t}, x_{1:t}) = \log\Bigg(\frac{p(m_i|z_{1:t}, x_{1:t})}{1-p(m_i|z_{1:t}, x_{1:t})}\Bigg)
 $$
