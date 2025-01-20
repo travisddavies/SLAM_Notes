@@ -58,8 +58,6 @@ $$
 w_t^{[j]} = \frac{target(x_t^{[j]})}{proposal(x_t^{[j]})}
 $$
 - Resampling: Draw sample $i$ with probability $w_t^{[i]}$ and $J$ times
-
-## Particle Filter Algorithm
 ![](Images/particle_filter_algo.png)
 
 ## Monte Carlo Localisation
