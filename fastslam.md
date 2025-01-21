@@ -85,3 +85,201 @@ $$
 - Past poses of a sample are not revised
 - No need to maintain past poses in the sample set
 
+## FastSLAM
+- Proposed by Montemerlo et al. in 2002
+- Each landmark is represented by a $2\times2$ EKF
+- Each particle therefore has to maintain $M$ individual EKFs
+![](Images/fastslam.png)
+
+## FastSLAM - Action Update
+![](Images/fastslam-action.png)
+
+## FastSLAM - Sensor Update
+![](Images/fastslam-sensor.png)
+![](Images/fastslam-sensor1.png)
+![](Images/fastslam-sensor2.png)
+
+## Key Steps of FastSLAM 1.0
+- Extend the path posterior by sampling a new pose for each sample
+$$
+x_t{[t]} \sim p(x_t | x_{t-1}^{[k]}, u_t)
+$$
+- Compute particle weight 
+$$
+w^{[k]} = |2\pi Q|^{-\frac{1}{2}}\exp\{-\frac{1}{2}(z_t - \hat{z}^{[k]})^T Q^{-1}(z_t - \hat{z}^{[k]})\}
+$$
+- $Q$ $\leftarrow$ measurement covariance
+- $\hat{z}$ $\leftarrow$ exp. observation
+
+- Update belief of observed landmarks (EKF update rule)
+- Resample
+
+## FastSLAM 1.0 - Part 1
+![](Images/fastslam-p1.png)
+![](Images/fastslam-p11.png)
+![](Images/fastslam-p2.png)
+![](Images/fastslam-p21.png)
+
+## FastSLAM in Action
+![](Images/fastslam_in_action.png)
+
+## The Weight is a Result From the Importance Sampling Principle
+- Importance weight is given by the ratio of target and proposal in $x^{[k]}$
+- See: importance sampling principle
+$$
+w^{[k]} = \frac{\text{target}(x^{[k]})}{\text{proposal}(x^{[k]})}
+$$
+
+## The Importance Weight
+- The target distribution is
+$$
+p(x_{1:t}|z_{1:t}, u_{1:t})
+$$
+- The proposal distribution is
+$$
+p(x_{1:t}|z_{1:t-1}, u_{1:t})
+$$
+- Proposal is used step-by-step
+$$
+p(x_{1:t}|z_{1:t-1}, u_{1:t}) = \underbrace{p(x_t|x_{t-1}, u_t)}_{\text{from } \mathcal{X}_{t-1} \text{ to } \bar{\mathcal{X}}_t} \underbrace{p(x_{1:t-1}|z_{1:t-1}, u_{1:t-1})}_{\mathcal{X}_{t-1}}
+$$
+![](Images/importance_weight0.png)
+![](Images/importance_weight1.png)
+![](Images/importance_weight2.png)
+![](Images/importance_weight3.png)
+![](Images/importance_weight4.png)
+- Integrating over the pose of the observed landmark leads to
+![](Images/importance_weight5.png)
+![](Images/importance_weight6.png)
+![](Images/importance_weight7.png)
+- This leads to
+![](Images/importance_weight8.png)
+![](Images/importance_weight9.png)
+
+## FastSLAM 1.0 - Part 2
+![](Images/fastslam-p22.png)
+
+## Data Association Problem
+- Which observation belongs to which landmark?
+![](Images/data_association.png)
+- More than one possible association
+- **Potential data associations depend on the pose of the robot**
+
+## Particles Support for Multi-Hypotheses Data Association
+- Decisions on a per-particle basis
+- Robot pose **error** is factored out of data association decisions
+![](Images/particle_hypothesis.png)
+
+## Per-Particle Data Association
+![](Images/per-particle.png)
+- Two options for per-particle data association
+	- Pick the most probable match
+	- Pick an random association weighted by the observation likelihood
+- If the probability for an assignment is too low, generate a new landmark
+
+- Multi-modal belief
+- Pose error is factored out of data association decisions
+- **Simple but effective** data association
+- Big **advantage of FastSLAM** over EKF
+
+## Results - Victoria Park
+- 4km traverse
+- < 2.5 m RMS position error
+- 100 particles
+![](Images/victora_park_results.png)
+![](Images/legend.png)
+
+## Results (Sample Size)
+![](Images/sample_size_results.png)
+![](Images/results_motion_planning.png)
+
+## FastSLAM 1.0 Summary
+- Use a particle filter to model the belief
+- Factors the SLAM posterior into low-dimensional estimation problems
+- Model only the robot's path by sampling
+- Compute the landmarks given the path
+- Per-particle data association
+- No robot pose uncertainty in the per-particle data association
+
+## FastSLAM Complexity - Simple Implementation
+- Update robot particles based on the control
+$$
+O(N)
+$$
+- Incorporate an observation into the Kalman filters
+$$
+O(N)
+$$
+- Resample particle set
+$$
+O(NM)
+$$
+$$
+\begin{align}
+N &= \text{Number of particles} \\
+M &= \text{Number of map features}
+\end{align}
+$$
+
+## A Better Data Structure for FastSLAM
+![](Images/better_data_structure_fastslam.png)
+![](Images/better_data_structure_fastslam0.png)
+
+## FastSLAM Complexity
+- Update robot particles based on the control
+$$
+O(N)
+$$
+- Incorporate an observation into the Kalman filters
+$$
+O(N \log M)
+$$
+- Resample particle set
+$$
+O(N \log M)
+$$
+
+## Memory Complexity
+![](Images/memory_complexity.png)
+
+## FastSLAM 1.0
+- FastSLAM 1.0 uses the motion model as the proposal distribution
+$$
+x_t^{[k]} \sim p(x_t|x_{t-1}^{[k]}, u_t)
+$$
+- **Is there a better distribution to sample from?**
+
+## FastSLAM 1.0 to FastSLAM 2.0
+- FastSLAM 1.0 uses the motion model as the proposal distribution
+$$
+x_t^{[k]} \sim p(x_t|x_{t-1}^{[k]}, u_t)
+$$
+- FastSLAM 2.0 **considers also the measurements during sampling**
+- Especially useful if an accurate sensor is used (compared to the motion noise)
+
+## FastSLAM 2.0 (Informally)
+- FastSLAM 2.0 samples from 
+$$
+x_t^{[k]} \sim p(x_t | x_{1:t-1}^{[k]}, u_{1:t}, z_{1:t})
+$$
+- Results in a more peaked proposal distribution
+- Less particles are required
+- More robust and accurate
+- But more complex...
+
+## FastSLAM Problems
+- How to determine the sample size?
+- Particle deprivation, especially when closing (multiple loops)
+![](Images/fastslam_problems.png)
+
+## FastSLAM Summary
+- Particle filter-based SLAM
+- Rao-blackwellisation: model the robot's path by sampling and compute the landmarks given the poses
+- Allow for per-particle data association
+- FastSLAM 1.0 and 2.0 differ in the proposal distribution
+- Complexity $O(N \log M)$
+
+## FastSLAM Results
+- Scales well (1 million + features)
+- Robust to ambiguities in the data association 
+- Advantages compared to the classical EKF approach (especially with non-linearities)
