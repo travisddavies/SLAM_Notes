@@ -56,6 +56,8 @@ $$
 p(a,b) = p(b|a)p(a)
 $$
 - If $p(b|a)$ can be computed efficiently, represent only $p(a)$ with samples and compute $p(b|a)$ for every sample
+- The concept of this being that $b$ is considered the map and is high-dimensional, $a$ represents the particles of the robot trajectory and is low-dimensional
+- Rather than computing $p(a,b)$ which is costly, we can focus on $p(b|a)$, sampling from $a$ which is much more efficient 
 
 ## Rao-Blackwellization for SLAM
 - Factorisation of the SLAM posterior
@@ -65,6 +67,7 @@ $$
 
 ## Revisit the Graphical Model
 ![](Images/revisit_graphical_model.png)
+- Since the robot pose is known for each timestep, we can assume that each landmark $m_i$ is conditionally independent from each other.
 ![](Images/revisit_graphical_model1.png)
 
 ## Landmarks are Conditionally Independent Given the Poses
@@ -74,6 +77,7 @@ $$
 ## Rao-Blackwellisation for SLAM
 - Factorisation of SLAM posterior
 ![](Images/rao_blackwellisation3.png)
+- What this now means is that the probability can be now calculated via products of each landmark as shown below. Each probability is much lower in dimensionality than previously, hence saving heaps in computation
 ![](Images/rao_blackwellisation4.png)
 ![](Images/rao_blackwellisation5.png)
 ![](Images/rao_blackwellisation6.png)
@@ -92,9 +96,15 @@ $$
 ![](Images/fastslam.png)
 
 ## FastSLAM - Action Update
+- Below each robot pose represents a particle, and each landmark is represented by a $2\times2$ EKF filter
+- This just uses the odometry model to draw up the next pose of the robot
 ![](Images/fastslam-action.png)
 
 ## FastSLAM - Sensor Update
+- Next step is taking our sensor data to update our belief, i.e. the importance weight
+- Each particle predicts the landmarks at slightly different locations, where these points are then turned into importance weights
+- Pay attention to how close the predicted yellow points are from the landmarks, this will determine the importance weights for the predictions of each particle
+- After this, we can then update the map of each particle, along with its belief, as shown below
 ![](Images/fastslam-sensor.png)
 ![](Images/fastslam-sensor1.png)
 ![](Images/fastslam-sensor2.png)
@@ -161,6 +171,8 @@ $$
 
 ## Data Association Problem
 - Which observation belongs to which landmark?
+- If the robot is leaning a little more towards the right, it is more likely to be associated with the landmarks indicated by the red arrows
+- If the robot is leaning a little more towards the left, it is more likely to be associated with the landmarks indicated by the blue arrows
 ![](Images/data_association.png)
 - More than one possible association
 - **Potential data associations depend on the pose of the robot**
@@ -168,6 +180,7 @@ $$
 ## Particles Support for Multi-Hypotheses Data Association
 - Decisions on a per-particle basis
 - Robot pose **error** is factored out of data association decisions
+- As shown below, the goodness of a particle is also attributed to its data association. These two particles below show good data association with the landmarks, however the particles a bit higher and lower will likely not have as good data association and will likely be filtered out in later iterations of the SLAM algorithm
 ![](Images/particle_hypothesis.png)
 
 ## Per-Particle Data Association
