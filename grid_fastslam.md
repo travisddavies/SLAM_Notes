@@ -48,10 +48,8 @@
 
 ![](Images/pose_correction_scan_matching.png)
 
-## Motion Model for Scan Matching
-![](Images/motion_model_scan_matching2.png)
-
 ## Mapping Using Scan Matching
+- We can see below that the map's errors has improved greatly with this new method
 ![](Images/mapping_scan_matching.png)
 
 ## Grid-Based FastSLAM with Improved Odometry
@@ -60,9 +58,18 @@
 - Fewer particles are needed, since the error in the input is smaller
 
 ## Graphical Model for Mapping with Improved Odometry
+- The concept is that we will scan-match chunks of poses, i.e. 100
+- This will be done in succession, i.e. 100 poses, then another 100 poses, then another 100 poses
+- Then use a particle filter to make the jump in the map from chunk $i$ to chunk $i+1$ using the standard FastSLAM approach
+- As shown in the diagram below, you take the poses estimated from scan matching $k$ observations and measurements to jump to $x_k$
+- We then do 1 step by a real odometry measurement and we add it on top of the observations estimated from the scan-matching
+- We then take the observation of the last pose and apply to particle filter
+- This can be considered like taking many observations to jump from one local map to the next local map
+- Mathematically this works since you are applying the particle filter at pose $x_k$ with respect to $x_0$, then $x_{2k}$ with respect to $x_k$ and so on
 ![](Images/improved_odometry_graphical_model.png)
 
 ## Grid-Based FastSLAM with Scan-Matching
+- As shown below, the performance is very good, particularly for loop closures
 ![](Images/grid_slam_scan_matching.png)
 ![](Images/grid_slam_scan_matching2.png)
 ![](Images/grid_slam_scan_matching3.png)
@@ -83,15 +90,26 @@ $$
 - Less particles needed
 
 ## The Optimal Proposal Distribution
-
+- Now our proposal distribution can be broken down into smaller pieces using Bayes' Rule, with the first being the observation model and the second being the odometry model (blue v red lines)
+- As shown below, we can actually see that combining poses via scan-matching actually has very good, peaked results. However for the odometry model, we can see that the results are not as good.
+- We can therefore say that the first term actually dominates this product
+- We thus want to exploit this feature in the distribution
 ![](Images/optimal_proposal_distribution.png)
 
 ## Proposal Distribution
+- We can first just say that the top product can be called $\tau(x_t)$
 ![](Images/proposal_distribution0.png)
+- What we then do is focus on the bottom expression, which doesn't contain the pose of the current timestep
+- What we can do then is differentiate over all possible poses multiplied by the likelihood to be in the current pose (i.e. $\tau$)
 ![](Images/proposal_distribution1.png)
+- We can therefore say then that the formula can be simplied as follows
 ![](Images/proposal_distribution2.png)
+- What it means by locally limiting the area over which to integrate means that we will have very peaked distributions when we scan-match (as shown above)
+- What it means to globally limit the area over which we integrate means that we will limit our poses to a reasonable distance (i.e. 5m), and we can be sure that our robot in the SLAM results won't look like it good teleported away
 ![](Images/proposal_distribution3.png)
+- A demonstration is shown below, the first term will have several peaks but many peaks are not important, while the global peak will limit the distribution to only the local peaks within its own peak
 ![](Images/proposal_distribution4.png)
+- So this is just the finalisation of what we were discussing above, with an introduction of how we sample from it
 ![](Images/proposal_distribution5.png)
 
 ## Gaussian Proposal Distribution
@@ -120,6 +138,7 @@ $x_j$ are the points sampled around the result of the scan matcher
 
 ## Improved Proposal
 - The proposal adapts to the structure of the environment
+- As shown below, if we have an open field we'll generally have poses spread out over the area. If we have a corridor, the model recognises the walls and spreads out poses along the axis. If the is a wall in front too, then the poses will be very concentrated.
 ![](Images/improved_proposal.png)
 
 ## Resampling
