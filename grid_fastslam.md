@@ -145,6 +145,7 @@ $x_j$ are the points sampled around the result of the scan matcher
 - Resampling at each step limits the "memory" of our filter
 - Suppose we lose each time 25% of the particles, this may lead to:
 ![](Images/resampling1.png)
+- What the above is showing us is that we can often find that the resampled actions can all lead to being connected to just a few past particles, which is problematic because if the past trajectory pose was wrong then the map will still be wrong, so it hurts our performance a lot.
 - Goal: Reduce the resampling actions
 
 ## Selective Resampling
@@ -170,6 +171,7 @@ $$
 - Note: weights need to be normalized 
 
 ## Typical Evolution of $n_{eff}$
+- The big drops shown below also correspond with resampling the particles, since many particles are found to be not that useful
 ![](Images/typical_evolution_neff.png)
 
 ## Intel Lab
