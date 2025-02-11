@@ -62,7 +62,7 @@ $$
 ## Robot Motion Models
 - Robot motion is inherently uncertain
 - How can we model this uncertainty?
-![](Images/robot-motion-model.png)
+![](robot-motion-model.png)
 
 ## Probabilistic Motion Models
 - Specifies a posterior probability that action u carries the robot from $x$ to $x'$
@@ -88,7 +88,7 @@ $$
 $$
 \delta_{rot2} = \bar{\theta}' - \bar{\theta} - \delta_{rot1}
 $$
-![](Images/odometry-model.png)
+![](odometry-model.png)
 
 ## Probability Distribution
 - Noise in odometry $u=(\delta_{rot1}, \delta_{trans}, \delta_{rot2})$
@@ -96,13 +96,13 @@ $$
 $$
 u \sim N(0, \Sigma)
 $$
-![](Images/probability-distribution.png)
+![](probability-distribution.png)
 
 ## Examples (Odometry-Based)
-![](Images/examples-odometry-based.png)
+![](examples-odometry-based.png)
 
 ## Velocity-Based Model
-![](Images/velocity-based-model.png)
+![](velocity-based-model.png)
 
 ## Motion Equation
 - Robot moves from $(x,y, \theta)$ to $(x', y', \theta')$
@@ -156,7 +156,7 @@ $$
 - The **underlined term** above accounts for the final rotation
 
 ## Examples (Velocity-Based)
-![](Images/examples-velocity-based.png)
+![](examples-velocity-based.png)
 
 # Sensor Model
 $$
@@ -174,14 +174,14 @@ p(z_t|x_t, m) = \prod^k_{i=1}p(z_t^i|x_t, m)
 $$
 
 ## Beam-Endpoint Model
-![](Images/beam-endpoint-model.png)
-![](Images/beam-endpoint-model2.png)
+![](beam-endpoint-model.png)
+![](beam-endpoint-model2.png)
 
 ## Ray-Cast Model
 - Ray-cast model considers the first obstacle long the line of sight
 - Mixture of four models
 
-![](Images/ray-cast-model.png)
+![](ray-cast-model.png)
 
 ## Model for Perceiving Landmarks with Range-Bearing Sensors
 - Range-bearing $z_t^{i} = (r_t^i, \phi_t^i)^T$

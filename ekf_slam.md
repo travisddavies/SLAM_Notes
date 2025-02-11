@@ -3,7 +3,7 @@
 - Building a map and locating the robot in the map at the same time
 - Chicken-or-egg problem
 
-![](Images/slam.png)
+![](slam.png)
 
 ## Definition of the SLAM Problem
 **Given**
@@ -26,7 +26,7 @@ x_{0:T} = \{x_0, x_1, x_2, \dots, x_T\}
 $$
 
 ## Three Main Paradigms
-![](Images/three_main_paradigms.png)
+![](three_main_paradigms.png)
 
 ## Bayes Filter
 - Recursive filter with prediction and correction step
@@ -44,10 +44,10 @@ $$
 $$
 p(x_t,m|z_{1:t}, u_{1:t})
 $$
-![](Images/ekf_for_online_slam.png)
+![](ekf_for_online_slam.png)
 
 ## Extended Kalman Filter
-![](Images/ekf.png)
+![](ekf.png)
 
 ## EKF SLAM
 - Application of the EKF to SLAM
@@ -64,11 +64,11 @@ $$
 - Yellow represents the covariance matrix of the robot's pose
 - Blue represents the covariance matrix of the mapping
 - Greeen represents the correlation between the robot pose variance matrix and the mapping covariance matrix
-![](Images/ekf_slam_state_representation.png)
+![](ekf_slam_state_representation.png)
 - More compactly
-![](Images/more_compactly.png)
+![](more_compactly.png)
 - Even more compactly (not: $x_R \rightarrow x$)
-![](Images/even_more_compactly.png)
+![](even_more_compactly.png)
 
 ## EKF SLAM: Filter Cycle
 1. State prediction
@@ -81,24 +81,24 @@ $$
 - Below the white circle represents the robot, and the dashed line represents the trajectory of the robot in its environment.
 - The red ellipse around the robot represents the level of uncertainty about the robot's pose, which increases as he moves in his environment
 - Since the robot's movement in its world (if we don't assume that it doesn't bump and move anything) **will not influence the location of landmarks in the map**, we can say that the robot's movement will **only affect the green-highlighted areas in the below matrices**.
-![](Images/state_prediction2.png)
+![](state_prediction2.png)
 
 ### EKF SLAM: Measurement Prediction
 - This stage is basically the equivalent of saying "given my current pose, what sort of landmark should I measure?"
 - As can be seen by the highlighted star in the below diagram, the measurement prediction given the robot's pose is the star, with the red ellipse representing its uncertainty level
-![](Images/measurement_prediction.png)
+![](measurement_prediction.png)
 
 ### EKF SLAM: Obtained Measurement
 - This is the actual measurement that the robot received
-![](Images/obtained_measurement.png)
+![](obtained_measurement.png)
 
 ### EKF SLAM: Data Association and Difference Between $h(x)$ and $z$
 - We need to find which landmark this measurement belongs to, and the difference between the predicted and measured landmark
-![](Images/data_association_and_difference.png)
+![](data_association_and_difference.png)
 
 ### EKF SLAM: Update Step
 - Once we have completed all the above steps, we can then update the state matrix for correction
-![](Images/update_slam.png)
+![](update_slam.png)
 
 ## EKF SLAM: Concrete Example
 **Setup**
@@ -112,10 +112,10 @@ $$
 ## Initialisation
 - Robot starts in its own reference frame (all landmarks unknown)
 - $2N+3$ dimensions
-![](Images/initialisation.png)
+![](initialisation.png)
 
 ## Extended Kalman Filter Algorithm
-![](Images/ekf_algorithm.png)
+![](ekf_algorithm.png)
 
 ## Prediction Step (Motion)
 - Goal: Update state space based on the robot's motion
@@ -164,15 +164,15 @@ w_t \Delta t
 $$
 - to the $2N+3$ dimensional space
 - the first three columns are an identity matrix, and the last $2N$ columns are all zeros
-![](Images/update_the_state_space.png)
+![](update_the_state_space.png)
 
 ## Extended Kalman Filter Algorithm
 - First line now complete
-![](Images/ekf_algorithm_3.png)
+![](ekf_algorithm_3.png)
 
 ## Update Covariance
 - The function $g$ only affects the robot's motion and not the landmarks
-![](Images/update_covariance.png)
+![](update_covariance.png)
 
 ## Jacobian of the Motion
 $$
@@ -216,16 +216,16 @@ G_t^x =
 $$
 
 ## This Leads to the Update
-![](Images/this_leads_to_the_update.png)
+![](this_leads_to_the_update.png)
 
 ## Extended Kalman Filter Algorithm
-![](Images/extended_kalman_filter_algorithm.png)
+![](extended_kalman_filter_algorithm.png)
 
 ## EKF SLAM: Prediction Step
-![](Images/ekf_slam_prediction_step.png)
+![](ekf_slam_prediction_step.png)
 
 ## Extended Kalman Filter Algorithm
-![](Images/extended_kalman_filter_algorithm.png)
+![](extended_kalman_filter_algorithm.png)
 
 ## EKF SLAM: Correction Step
 - Known data association
@@ -328,7 +328,7 @@ q &= \delta^T\delta \\
 \end{equation}
 $$
 - Compute the Jacobian
-![](Images/low-dim-space.png)
+![](low-dim-space.png)
 $$
 \text{low } H_t^i = \frac{\partial h (\bar{\mu}_t)}{\partial \bar{\mu}_t}
 = 
@@ -440,19 +440,19 @@ $$
 \end{aligned}
 $$
 - Map it to the high dimensional space
-![](Images/map-to-high-dimensional-space.png)
+![](map-to-high-dimensional-space.png)
 
 ## Next Steps as Specified
-![](Images/next_steps_as_specified.png)
+![](next_steps_as_specified.png)
 
 ## Extended Kalman Filter Algorithn
-![](Images/extended_kalman_filter_algorithm.png)
+![](extended_kalman_filter_algorithm.png)
 
 ## EKF SLAM - Correction (1/2)
-![](Images/ekf_slam_correction_1.png)
+![](ekf_slam_correction_1.png)
 
 ## EKF SLAM - Correction (2/2)
-![](Images/ekf_slam_correction_2.png)
+![](ekf_slam_correction_2.png)
 
 ## Implementation Notes
 - Measurement update in a single step requires only one full belief update
@@ -467,10 +467,10 @@ $$
 - Uncertainties **collapse** after a loop closure (whether the closure was correct or not)
 
 ## Before the Loop Closure
-![](Images/before_the_loop_closure.png)
+![](before_the_loop_closure.png)
 
 ## After the Loop Closure
-![](Images/after_the_loop_closure.png)
+![](after_the_loop_closure.png)
 
 ## Loop Closure in SLAM
 - Loop closing **reduces** the uncertainty in robot and landmark estimates
@@ -479,10 +479,10 @@ $$
 
 ## EKF SLAM Correlations
 - In the limit, the landmark estimates become **fully correlated**
-![](Images/ekf_slam_correlations.png)
-![](Images/ekf_slam_correlations2.png)
-![](Images/ekf_slam_correlations3.png)
-![](Images/ekf_slam_correlations4.png)
+![](ekf_slam_correlations.png)
+![](ekf_slam_correlations2.png)
+![](ekf_slam_correlations3.png)
+![](ekf_slam_correlations4.png)
 
 ## EKF SLAM Correlations
 - The correlation between the robot's pose and the landmarks **cannot** be ignored
@@ -491,29 +491,29 @@ $$
 ## EKF SLAM Uncertainties
 - The **determinant** of any sub-matrix of the map covariance matrix **decrease monotonically**
 - New landmarks are initialised with **maximum uncertainty**
-![](Images/ekf_slam_uncertainties.png)
+![](ekf_slam_uncertainties.png)
 
 ## EKF SLAM in the Limit
 - In the limit, the covariance associated with any single landmark location estimate is determined only by the initial covariance in the vehicle location estimate
-![](Images/ekf_slam_in_the_limit.png)
+![](ekf_slam_in_the_limit.png)
 
 ## Example: Victoria Park Dataset
-![](Images/victoria_park_dataset.png)
+![](victoria_park_dataset.png)
 
 ## Victoria Park: Data Acquisition
-![](Images/victoria_park_data_acquisition.png)
+![](victoria_park_data_acquisition.png)
 
 ## Victoria Park: EKF Estimate
-![](Images/victoria_park_ekf_estimate.png)
+![](victoria_park_ekf_estimate.png)
 
 ## Victoria Park: Landmarks
-![](Images/victoria_park_landmarks.png)
+![](victoria_park_landmarks.png)
 
 ## Example: Tennis Court Dataset
-![](Images/example_tennis_court_dataset.png)
+![](example_tennis_court_dataset.png)
 
 ## EKF SLAM on a Tennis Court
-![](Images/ekf_slam_on_a_tennis_court.png)
+![](ekf_slam_on_a_tennis_court.png)
 
 ## EKF SLAM Complexity
 - Cubic complexity depends only on the measurement dimensionality

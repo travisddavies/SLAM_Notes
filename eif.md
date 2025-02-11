@@ -4,7 +4,7 @@
 $$
 p(x) = \det(2\pi\Sigma)^{-\frac{1}{2}}\exp(-\frac{1}{2}(x - \mu)^T \Sigma^{-1}(x-\mu))
 $$
-![](Images/gaussians-eif.png)
+![](gaussians-eif.png)
 
 ## Canonical Parameterisation
 - Alternatie representation for Gaussians
@@ -22,7 +22,7 @@ $$
 $$
 
 ## Complete Parameterisations
-![](Images/complete_parameterisations.png)
+![](complete_parameterisations.png)
 
 ## Towards the Information Form
 $$
@@ -48,7 +48,7 @@ $$
 ## Marginalisation and Conditioning
 - Marginalisation is easy - just simply cut out a section of the matrix
 - Conditioning is hard - requires  cutting out a section of the matrix and then inverting it (expensive computationally!)
-![](Images/marginalisation_and_conditioning.png)
+![](marginalisation_and_conditioning.png)
 
 ## From the Kalman Filter to the Information Filter
 - Two parameterisation for  Gaussian
@@ -58,7 +58,7 @@ $$
 - Kalman filtering in information form is called information filtering
 
 ## Kalman Filter Algorithm
-![](Images/kalman_filter_eif.png)
+![](kalman_filter_eif.png)
 
 ## Prediction Step (1)
 - Transform $\overline{\Sigma}_t = A_t\Sigma_{t-1}A_t^T + R_t$ 
@@ -80,7 +80,7 @@ $$
 $$
 
 ## Information Filter Algorithm
-![](Images/information_filter_algorithm.png)
+![](information_filter_algorithm.png)
 
 ## Correction Step
 - Use the Bayes filter measurement update and replace the components
@@ -104,7 +104,7 @@ $$
 $$
 
 ## Information Filter Algorithm
-![](Images/information_filter_algorithm2.png)
+![](information_filter_algorithm2.png)
 
 ## Prediction and Correction
 - Prediction
@@ -154,7 +154,7 @@ $$
 $$
 
 ## Prediction: From EKF to EIF
-![](Images/prediction_from_ekf_to_eif.png)
+![](prediction_from_ekf_to_eif.png)
 
 ## Correction Step of the EIF
 - As from the KF to IF transition, use substitute the moments in the measurement update
@@ -170,7 +170,7 @@ $$
 $$
 
 ## Extended Information Filter
-![](Images/extended_information_filter.png)
+![](extended_information_filter.png)
 
 ## EIF vs. EKF
 - The EIF is the EKF in information form

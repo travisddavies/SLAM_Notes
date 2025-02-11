@@ -6,7 +6,7 @@
 **Today: SLAM for building grid maps**
 
 ## Mapping With Raw Odometry
-![](Images/mapping_raw_odometry.png)
+![](mapping_raw_odometry.png)
 
 ## Observation
 - **Assuming known poses fails!**
@@ -17,14 +17,14 @@
 
 ## Rao-Blackwellisation for SLAM
 - Factorisation of the SLAM posterior
-![](Images/rao_blackwellisation_for_slam.png)
+![](rao_blackwellisation_for_slam.png)
 
 ## Grid-Based SLAM
 - As with landmarks, the map depends on the poses of the robot during data acquisition
 - If the poses are known, grid-based mapping is easy ("mapping with known poses")
 
 ## A Graphical Model for Grid-Based SLAM
-![](Images/graphical_model_grid_slam.png)
+![](graphical_model_grid_slam.png)
 
 ## Grid-Based Mapping with Rao-Blackwellisation Particle Filters
 - Each particle represents a possible trajectory of the robot
@@ -32,10 +32,10 @@
 - Each particle updates it upon "mapping with known poses"
 
 ## Particle Filter Example
-![](Images/particle_filter_example.png)
+![](particle_filter_example.png)
 
 ## Performance of Grid-Based FastSLAM 1.0
-![](Images/performance_fastslam.png)
+![](performance_fastslam.png)
 
 ## Problem
 - Too many samples are needed to sufficiently model the motion noise
@@ -46,11 +46,11 @@
 ## Pose Correction Using Scan-Matching
 - Maximise the likelihood of the **current** pose and map relative to the **previous** pose and map
 
-![](Images/pose_correction_scan_matching.png)
+![](pose_correction_scan_matching.png)
 
 ## Mapping Using Scan Matching
 - We can see below that the map's errors has improved greatly with this new method
-![](Images/mapping_scan_matching.png)
+![](mapping_scan_matching.png)
 
 ## Grid-Based FastSLAM with Improved Odometry
 - Scan-matching provides a **locally consistent** pose correction
@@ -66,13 +66,13 @@
 - We then take the observation of the last pose and apply to particle filter
 - This can be considered like taking many observations to jump from one local map to the next local map
 - Mathematically this works since you are applying the particle filter at pose $x_k$ with respect to $x_0$, then $x_{2k}$ with respect to $x_k$ and so on
-![](Images/improved_odometry_graphical_model.png)
+![](improved_odometry_graphical_model.png)
 
 ## Grid-Based FastSLAM with Scan-Matching
 - As shown below, the performance is very good, particularly for loop closures
-![](Images/grid_slam_scan_matching.png)
-![](Images/grid_slam_scan_matching2.png)
-![](Images/grid_slam_scan_matching3.png)
+![](grid_slam_scan_matching.png)
+![](grid_slam_scan_matching2.png)
+![](grid_slam_scan_matching3.png)
 
 ## Summary so far...
 - Approach to SLAM that combines scan matching and FastSLAM
@@ -94,26 +94,26 @@ $$
 - As shown below, we can actually see that combining poses via scan-matching actually has very good, peaked results. However for the odometry model, we can see that the results are not as good.
 - We can therefore say that the first term actually dominates this product
 - We thus want to exploit this feature in the distribution
-![](Images/optimal_proposal_distribution.png)
+![](optimal_proposal_distribution.png)
 
 ## Proposal Distribution
 - We can first just say that the top product can be called $\tau(x_t)$
-![](Images/proposal_distribution0.png)
+![](proposal_distribution0.png)
 - What we then do is focus on the bottom expression, which doesn't contain the pose of the current timestep
 - What we can do then is differentiate over all possible poses multiplied by the likelihood to be in the current pose (i.e. $\tau$)
-![](Images/proposal_distribution1.png)
+![](proposal_distribution1.png)
 - We can therefore say then that the formula can be simplied as follows
-![](Images/proposal_distribution2.png)
+![](proposal_distribution2.png)
 - What it means by locally limiting the area over which to integrate means that we will have very peaked distributions when we scan-match (as shown above)
 - What it means to globally limit the area over which we integrate means that we will limit our poses to a reasonable distance (i.e. 5m), and we can be sure that our robot in the SLAM results won't look like it good teleported away
-![](Images/proposal_distribution3.png)
+![](proposal_distribution3.png)
 - A demonstration is shown below, the first term will have several peaks but many peaks are not important, while the global peak will limit the distribution to only the local peaks within its own peak
-![](Images/proposal_distribution4.png)
+![](proposal_distribution4.png)
 - So this is just the finalisation of what we were discussing above, with an introduction of how we sample from it
-![](Images/proposal_distribution5.png)
+![](proposal_distribution5.png)
 
 ## Gaussian Proposal Distribution
-![](Images/gaussian_proposal_distribution.png)
+![](gaussian_proposal_distribution.png)
 
 ## Estimating the Parameters of the Gaussian for Each Particle
 $$
@@ -125,26 +125,26 @@ $$
 $x_j$ are the points sampled around the result of the scan matcher
 
 ## Gaussian Proposal Distribution
-![](Images/gaussian_proposal_distribution1.png)
+![](gaussian_proposal_distribution1.png)
 
 ## The Importance Weight
-![](Images/importance_weight10.png)
-![](Images/importance_weight11.png)
-![](Images/importance_weight12.png)
-![](Images/importance_weight13.png)
-![](Images/importance_weight14.png)
-![](Images/importance_weight15.png)
-![](Images/importance_weight16.png)
+![](importance_weight10.png)
+![](importance_weight11.png)
+![](importance_weight12.png)
+![](importance_weight13.png)
+![](importance_weight14.png)
+![](importance_weight15.png)
+![](importance_weight16.png)
 
 ## Improved Proposal
 - The proposal adapts to the structure of the environment
 - As shown below, if we have an open field we'll generally have poses spread out over the area. If we have a corridor, the model recognises the walls and spreads out poses along the axis. If the is a wall in front too, then the poses will be very concentrated.
-![](Images/improved_proposal.png)
+![](improved_proposal.png)
 
 ## Resampling
 - Resampling at each step limits the "memory" of our filter
 - Suppose we lose each time 25% of the particles, this may lead to:
-![](Images/resampling1.png)
+![](resampling1.png)
 - What the above is showing us is that we can often find that the resampled actions can all lead to being connected to just a few past particles, which is problematic because if the past trajectory pose was wrong then the map will still be wrong, so it hurts our performance a lot.
 - Goal: Reduce the resampling actions
 
@@ -172,36 +172,36 @@ $$
 
 ## Typical Evolution of $n_{eff}$
 - The big drops shown below also correspond with resampling the particles, since many particles are found to be not that useful
-![](Images/typical_evolution_neff.png)
+![](typical_evolution_neff.png)
 
 ## Intel Lab
 - **15 particles**
 - Four times faster than real-time P4, 2.8GHz
 - 5cm resolution during scan matching
 - 1cm resolution in final map
-![](Images/intel_lab.png)
-![](Images/intel_lab1.png)
+![](intel_lab.png)
+![](intel_lab1.png)
 
 ## Outdoor Campus Map
 - **30 particles**
 - $250 \times 250m^2$
 - 1.75km (odometry)
 - 30cm resolution in final map
-![](Images/outdoor_campus_map.png)
+![](outdoor_campus_map.png)
 
 ## MIT Killian Court
-![](Images/mit_killian_court.png)
+![](mit_killian_court.png)
 - The **"infinite-corridor-dataset"** at MIT
-![](Images/mit_killian_court1.png)
+![](mit_killian_court1.png)
 
 ## Real World Application
 - This guy uses a similar technique
-![](Images/real_world_application.png)
+![](real_world_application.png)
 
 ## Problems of Gaussian Proposals
 - Gaussians are uni-model distributions
 - In case of loop-closures, the likelihood function might be multi-modal
-![](Images/problem_gaussian_proposals.png)
+![](problem_gaussian_proposals.png)
 
 ## Gaussian or Non-Gaussian?
 - Statistical test to check whether or not sample a generated from a Gaussian
@@ -209,22 +209,22 @@ $$
 - Difference between the Gaussian and the optimal proposal via KLD
 
 ## Is a Gaussian an Accurate Choice for the Proposal?
-![](Images/gaussian_accurate.png)
+![](gaussian_accurate.png)
 
 ## Problems of Gaussian Proposals
 - Multi-modal likelihood function can cause filter divergence
-![](Images/problem_gaussian_proposals1.png)
+![](problem_gaussian_proposals1.png)
 
 ## Efficient Multi-Modal Sampling
 - Approximate the likelihood in a better way!
-![](Images/efficient_multimodal_sampling.png)
+![](efficient_multimodal_sampling.png)
 - Sample from odometry first and the use this as the start point for scan matching
 
 ## The Two-Step Sampling Works!
-![](Images/two_step_sampling.png)
+![](two_step_sampling.png)
 
 ## Proposal Error Evaluation
-![](Images/proposal_error_evalution.png)
+![](proposal_error_evalution.png)
 
 ## Effect of Two-Step Sampling
 - Allows for better modeling multi-modal likelihood functions (high KLD values do not occur)

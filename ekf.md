@@ -21,7 +21,7 @@ $$
 $$
 p(x) = \det(2\pi \Sigma)^{-\frac{1}{2}} \exp(-\frac{1}{2}(x - \mu)^T \Sigma^{-1}(x-\mu))
 $$
-![](Images/kalman-filter-distribution.png)
+![](kalman-filter-distribution.png)
 
 ## Properties: Marginalisatin and Conditioning
 - Given
@@ -131,18 +131,18 @@ $$
 - Proof is non-trivial
 
 ## Kalman Filter Algorithm
-![](Images/kalman-filter-algorithm.png)
+![](kalman-filter-algorithm.png)
 
 ## 1D Kalman Filter Example (1)
-![](Images/1d-kalman-filter-example.png)
+![](1d-kalman-filter-example.png)
 
 ## 1D Kalman Filter Example (2)
-![](Images/1d-kalman-filter-example-2.png)
+![](1d-kalman-filter-example-2.png)
 
 ## Kalman Filter Assumptions
 - Gaussian distributions and noise
 - Linear motion and observation model
-![](Images/kalman-filter-assumptions.png)
+![](kalman-filter-assumptions.png)
 
 ## Non-Linear Dynamic Systems
 - Most realistic problems (in robotics) involve nonlinear functions
@@ -150,13 +150,13 @@ $$
 
 ## Linearity Assumption Revisited
 - We can use the RHS linear function to express the parameters $a$ for gradient and $b$ for bias for a Gaussian distribution
-![](Images/linear-assumption-revisited.png)
+![](linear-assumption-revisited.png)
 
 ## Non-Linear Function
 - In a non-linear function, we do not simply have an $a$ and $b$ parameter that we can use to express a Gaussian distribution
 - This leads to non-Gaussian distributions, as can be seen on the left
 - However a single point on the plot does have an $a$ and $b$ if we find the derivative
-![](Images/non-linear-function.png)
+![](non-linear-function.png)
 
 ## Non-Gaussian Distributions
 - The non-linear functions lead to non-Gaussian distributions
@@ -166,7 +166,7 @@ $$
 **Local linearisation!**
 
 ## EKF Linearisation: First Order Taylor Expansion
-![](Images/ekf-linearisation-first-order-taylor-expansion.png)
+![](ekf-linearisation-first-order-taylor-expansion.png)
 
 ## Reminder: Jacobian Matrix
 - It is a **non-square matrix** $m \times n$ in general
@@ -193,26 +193,26 @@ $$
 
 ## Reminder: Jacobian Matrix
 - It is the orientation of the tangent plane to the vector-valued function at a given point
-![](Images/reminder-jacobian-matrix.png)
+![](reminder-jacobian-matrix.png)
 - Generalises the gradient of a scalar valued function
 
 ## Linearity Assumption Revisited
-![](Images/linearity-assumption-revisited.png)
+![](linearity-assumption-revisited.png)
 
 ### Non-Linear Function
-![](Images/non-linear-function.png)
+![](non-linear-function.png)
 
 ### EKF Linearisation (1)
 - Below shows the difference between the gaussian of the function and the EKF Gaussian through linearisation via Taylor Approximation
-![](Images/ekf-linearisation-1.png)
+![](ekf-linearisation-1.png)
 
 ### EKF Linearisation (2)
 - However if the Gaussian distribution's covariance increases (i.e. the points recorded are far away from each other), then the difference between the EKF Gaussian distribution and the actual Gaussian distribution increases.
-![](Images/ekf-linearisation-2.png)
+![](ekf-linearisation-2.png)
 
 ### EKF Linearisation (3)
 - If the covariance is very low (i.e. we have tightly bound recorded points), then the difference between the EKF Gaussian distribution and the actual Gaussian distribution is also very low.
-![](Images/ekf-linearisation-3.png)
+![](ekf-linearisation-3.png)
 
 ## Linearised Motion Model
 - The linearised model leads to
@@ -228,4 +228,4 @@ $$
 - $Q_t$ describes the measurement noise
 
 ## Extended Kalman Filter Algorithm
-![](Images/ekf-algorithm.png)
+![](ekf-algorithm.png)

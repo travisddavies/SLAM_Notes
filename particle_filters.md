@@ -4,18 +4,18 @@
 $$
 p(x) = \det(2\pi\Sigma)^{-\frac{1}{2}}\exp(-\frac{1}{2}(x-\mu)^T \Sigma^{-1}(x-\mu))
 $$
-![](Images/gaussian_filters.png)
+![](gaussian_filters.png)
 
 ## Motivation
 - Goal: approach for dealing with **arbitrary distributions**
 
 ## Key Idea: Samples
 - Use **multiple samples** to represent arbitrary distributions
-![](Images/key_idea_samples.png)
+![](key_idea_samples.png)
 
 ## Particle Set
 - Set of weighted samples
-![](Images/particle_set.png)
+![](particle_set.png)
 - The samples represent the posterior
 $$
 p(x) = \sum^J_{j=1} w^{[j]} \delta_{x^{[j]}}(x)
@@ -23,13 +23,13 @@ $$
 
 ## Particles for Approximation
 - Particles for function approximation
-![](Images/particles_for_approximation.png)
+![](particles_for_approximation.png)
 - The more particles fall into a region, the higher the probability of the region
 **How to obtain such samples?**
 
 ## Closed Form Sampling is Only Possible for a Few Distributions?
 - Example: Gaussian
-![](Images/closed_form_sampling.png)
+![](closed_form_sampling.png)
 How to sample from **other** distributions?
 
 ## Importance Sampling Principle
@@ -37,7 +37,7 @@ How to sample from **other** distributions?
 - Account for the "differences between $g$ and $f$" using a weight $w = f / g$
 - Target $f$
 - Pre-condition: $f(x) \rightarrow g(x) > 0$
-![](Images/importance_sampling_points.png)
+![](importance_sampling_points.png)
 
 ## Particle Filter
 - Recursive Bayes filter
@@ -58,7 +58,7 @@ $$
 w_t^{[j]} = \frac{target(x_t^{[j]})}{proposal(x_t^{[j]})}
 $$
 - Resampling: Draw sample $i$ with probability $w_t^{[i]}$ and $J$ times
-![](Images/particle_filter_algo.png)
+![](particle_filter_algo.png)
 
 ## Monte Carlo Localisation
 - Each particle is a pose hypothesis
@@ -72,10 +72,10 @@ w_t^{[j]} = \frac{target}{proposal} \propto p(z_t | x_t, m)
 $$
 
 ## Particle Filter for Localisation
-![](Images/particle_filter_for_localisation.png)
+![](particle_filter_for_localisation.png)
 
 ## Application: Particle Filter for Localisation (Known Map)
-![](Images/particle_filter_known_map_example.png)
+![](particle_filter_known_map_example.png)
 
 ## Resampling
 - Draw sample $i$ with probability $w^{[u]}_t$. Repeat $J$ times
@@ -83,10 +83,10 @@ $$
 - Survival of the fittest
 - "Trick" to avoid that many samples cover unlikely states
 - Needed as we have a limited number of samples
-![](Images/resampling.png)
+![](slam_notes/Images/resampling.png)
 
 ## Low Variance Resampling
-![](Images/low_variance_sampling.png)
+![](low_variance_sampling.png)
 
 ## Demonstration
 ![](https://www.youtube.com/watch?v=-EZjTNlGNJs)

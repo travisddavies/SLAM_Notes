@@ -1,19 +1,19 @@
 # Sparse Extended Information Filter for SLAM
 ## Reminder: Parameterisations for the Gaussian Distribution
-![](Images/reminder-eif.png)
+![](reminder-eif.png)
 
 ## Motivation
-![](Images/seif-motivation.png)
+![](seif-motivation.png)
 - Look at the normalised information matrix, notice how it contains many values that are very close to zero (white spaces)
 - The intuition is, what if we create a technique that sets many of these values to zero, thus creating a sparse matrix?
 - This technique will heavily boost our computational efficiency
-![](Images/seif-motivation-2.png)
+![](seif-motivation-2.png)
 
 ## Most Features Have Only a Small Number of Strong Links
 - We can interpret the matrix as a graph
 - Nodes with a darker colour indicates that there is a link between the robot's pose and this node (i.e. landmark). The darker the colour, the more information that this node contains about the robot's pose
 - Active features are features that the robot is currently observing or is having a direct influence on  measurement of the robot's pose
-![](Images/features-small-links.png)
+![](features-small-links.png)
 
 ## Information Matrix
 - Information matrix can be interpreted as a graph of constraints/links between nodes (variables)
@@ -30,35 +30,35 @@
 
 ## Effect of Measurement Update on the Information Matrix
 - First step is just the initial robot pose $x_t$
-![](Images/effect-information-matrix.png)
+![](effect-information-matrix.png)
 - Next step is that we observe landmark 1 $m_1$, so we colour-in the $x_t, m_1$ squares
-![](Images/effect-information-matrix0.png)
+![](effect-information-matrix0.png)
 - The next step is that the robot also observes the next landmark $m_2$, however $m_2$ and $m_1$ are at this step independent from each other. Thus we colour in these landmark's connections to $x_t$, but not the connections between each other.
-![](Images/effect-information-matrix3.png)
+![](effect-information-matrix3.png)
 - Adds information between the robot's pose and the observed feature
 - We therefore are left with the following matrix
-![](Images/effect-information-matrix4.png)
+![](effect-information-matrix4.png)
 
 ## Effect of Motion Update on the Information Matrix
 - When a robot takes a move to $x_{t+1}$, it adds uncertainty to where its position is, and as a result of performing marginalisation on the pose and landmarks, the landmarks $m_1,m_2$ become conditionally dependent on one another, as shown in the pictures below.
 - Another thing to also notice is that the links between the landmarks and the robot pose actually get weaker in this process, and the links between the two landmarks actually gets stronger. This is because of the uncertainty added to the robot pose when the robot moves, and to get information about landmark $m_1$, we also rely on information about landmark $m_2$
-![](Images/effect-information-matrix5.png)
-![](Images/effect-information-matrix6.png)
-![](Images/effect-information-matrix7.png)
+![](effect-information-matrix5.png)
+![](effect-information-matrix6.png)
+![](effect-information-matrix7.png)
 - Weakens the links between the robot's pose and the landmarks
 - Add links between landmarks
 
 ## Sparsification
 - What we do here is actually remove the link between the robot pose and one of the landmarks, in this case being $m_1$
-![](Images/sparsification.png)
-![](Images/sparsification1.png)
-![](Images/sparsification2.png)
+![](sparsification.png)
+![](sparsification1.png)
+![](sparsification2.png)
 - By doing this some of the information contained between $x_t$ and $m_1$ actually gets absorbed by the $m_2$ links
-![](Images/sparsification3.png)
+![](sparsification3.png)
 - Sparsification means "ignoring" links (assuming conditional independence)
 - Here: links between the robot's pose and some of the features
 - We will lose accuracy in doing this process, but we will gain in computational efficiency
-![](Images/sparsification4.png)
+![](sparsification4.png)
 
 ## Active and Passive Landmarks
 Key element of SEIF SLAM to obtain an efficient algorithm
@@ -76,7 +76,7 @@ Key element of SEIF SLAM to obtain an efficient algorithm
 	- $m_1$ was once active and is now passive
 	- $m_2$ is currently still active
 	- $m_3$ is passive because it has no direct links to $x_t$, since it has not yet been observed
-![](Images/active_vs_passive_landmarks.png)
+![](active_vs_passive_landmarks.png)
 
 ## Sparsification in Every Step
 - SEIF SLAM conducts a **sparsification** step **in each iteration**
@@ -86,10 +86,10 @@ Key element of SEIF SLAM to obtain an efficient algorithm
 - Landmarks have only links to nearby landmarks (landmarks that have been active at the same time)
 
 ## Four Steps of SEIF SLAM
-![](Images/four_steps_seif_slam.png)
+![](four_steps_seif_slam.png)
 - The corrected mean $\mu_t$ is estimated after the measurement update of the canonical $\xi_t$, $\Omega_t$ parameters
-![](Images/four_steps_seif_slam2.png)
-![](Images/four_steps_seif_slam4.png)
+![](four_steps_seif_slam2.png)
+![](four_steps_seif_slam4.png)
 
 ## Matrix Inversion Lemma
 - Before we start, let us re-visit the matrix inversion lemma
@@ -104,12 +104,12 @@ $$
 - Efficiency by exploiting sparseness of the information matrix
 
 ## Let us start from EKF SLAM...
-![](Images/let_us_start.png)
-![](Images/let_us_start2.png)
-![](Images/let_us_start3.png)
+![](let_us_start.png)
+![](let_us_start2.png)
+![](let_us_start3.png)
 
 ## SEIF - Prediction Step (1/3)
-![](Images/seif-prediction.png)
+![](seif-prediction.png)
 
 ### Compute the Information Matrix
 - Computing the information matrix
@@ -128,9 +128,9 @@ $$
 \end{align}
 $$
 - Apply the matrix inversion lemma
-![](Images/apply_matrix.png)
-![](Images/apply_matrix1.png)
-![](Images/apply_matrix2.png)
+![](apply_matrix.png)
+![](apply_matrix1.png)
+![](apply_matrix2.png)
 - This can be written as
 $$
 \begin{align}
@@ -145,11 +145,11 @@ $$
 
 ### Computing $\Phi_t = [G_t^T]^{-1} \Omega_{t-1} G_t^{-1}$ 
 - Goal: constant time if $\Omega_{t-1}$ is sparse
-![](Images/computing.png)
-![](Images/computing_2.png)
+![](computing.png)
+![](computing_2.png)
 - Here we pulled out the $I_{3}$ and $I_{2N}$ matrices and put them in the front
 - This can be simplified to the bottom equation
-![](Images/computing_3.png)
+![](computing_3.png)
 - We have
 $$
 \begin{align}
@@ -191,7 +191,7 @@ $$
 - Compute $\overline{\Omega}_t$ using $\Phi_t$ and $\kappa_t$
 
 ## SEIF - Prediction Step (2/3)
-![](Images/seif-prediction2.png)
+![](seif-prediction2.png)
 Information matrix is computed, now do the same for the information vector and the mean
 
 ### Compute the Mean
@@ -200,7 +200,7 @@ $$
 \overline{\mu}_t = \mu_{t-1} + F_x^T \delta
 $$
 - Reminder (from SEIF motion update)
-![](Images/seif-compute-the-mean.png)
+![](seif-compute-the-mean.png)
 
 ### Compute the Information Vector
 - We obtain the information vector by 
@@ -216,19 +216,19 @@ $$
 $$
 
 ## SEIF - Prediction Step (3/3)
-![](Images/seif-prediction3.png)
+![](seif-prediction3.png)
 
 ## Four Steps of SEIF SLAM
-![](Images/four_steps_seif_slam5.png)
+![](four_steps_seif_slam5.png)
 
 ## SEIF - Measurement (1/2)
-![](Images/seif_measurement1.png)
+![](seif_measurement1.png)
 
 ## SEIF - Measurement (2/2)
-![](Images/seif_measurement2.png)
+![](seif_measurement2.png)
 
 ## Four Steps of SEIF SLAM
-![](Images/four_steps_seif_slam6.png)
+![](four_steps_seif_slam6.png)
 
 ## Recovering the Mean
 The mean is needed for
@@ -237,7 +237,7 @@ The mean is needed for
 - Sparsification step (pose and subset of the landmarks)
 
 - In the motion update step, we can compute the predicted mean easily
-![](Images/recovering_the_mean.png)
+![](recovering_the_mean.png)
 
 - Computing the corrected mean, however, **cannot be done as easy**
 - Computing the mean from the information vector is costly:
@@ -265,7 +265,7 @@ $$
 - Can be done effectively given that only a few dimensions of $\mu$ are needed (robot's pose and active landmarks)
 
 ## Four Steps of SEIF SLAM
-![](Images/four_steps_seif_slam7.png)
+![](four_steps_seif_slam7.png)
 
 ## Sparsification
 - In order to perform all previous computations efficiently, we assumed a **sparse information matrix**
@@ -273,7 +273,7 @@ $$
 - **Question**: what does sparsifying the information matrix mean?
 - It means "ignoring" some direct links 
 - Assuming conditional independence
-![](Images/sparsification5.png)
+![](sparsification5.png)
 
 ## Sparsification in General
 - Replace the distribution
@@ -290,7 +290,7 @@ $$
 
 ## Approximation by Assuming Conditional Independence
 - This leads to
-![](Images/approximation.png)
+![](approximation.png)
 
 ## Sparsification in SEIFs
 - Goal: approximate $\Omega$ so that it is and stays sparse
@@ -299,7 +299,7 @@ $$
 
 ## Limit Robot-Landmark Links
 - Consider a set of **active landmarks** during the updates
-![](Images/limit_robot.png)
+![](limit_robot.png)
 
 ### Active and Passive Landmarks
 #### Active Landmarks
@@ -329,13 +329,13 @@ p(x_t, m| z_{1:t}, u_{1:t}) &= p(x_t, m^+, m^0, m^-|z_{1:t}, u_{1:t}) \\
 \end{align}
 $$
 - Dependencies from $z, u$ not shown:
-![](Images/sparsification6.png)
-![](Images/sparsification7.png)
-![](Images/sparsification8.png)
+![](sparsification6.png)
+![](sparsification7.png)
+![](sparsification8.png)
 
 ## Information Matrix Update
 - Sparsifying the direct links between the robot's pose and $m^0$ results in
-![](Images/information_matrix.png)
+![](information_matrix.png)
 
 ## Sparsified Information Matrix
 $$
@@ -360,13 +360,13 @@ $$
 $$
 
 ## Sparsification
-![](Images/sparsification9.png)
+![](sparsification9.png)
 
 ## Four Steps of SEIF SLAM
-![](Images/four_steps_seif_slam8.png)
+![](four_steps_seif_slam8.png)
 
 ## Effect of the Sparsification
-![](Images/effect_of_sparsification.png)
+![](effect_of_sparsification.png)
 
 ## SEIF SLAM vs. EKF SLAM
 - Roughly **constant time** complexity vs. quadratic complexity of the EKF
@@ -374,14 +374,14 @@ $$
 - SEIF SLAM is **less accurate** than EKF SLAM (sparsification, mean recovery)
 
 ## SEIF & EKF: CPU Time
-![](Images/cpu_time.png)
+![](cpu_time.png)
 
 ## SEIF & EKF: Memory Usage
-![](Images/memory_usage.png)
+![](memory_usage.png)
 
 ## SEIF & EKF: Error Comparison
-![](Images/error_comparison.png)
+![](error_comparison.png)
 
 ## Influence of the Active Features
-![](Images/influence.png)
-![](Images/influence2.png)
+![](influence.png)
+![](influence2.png)

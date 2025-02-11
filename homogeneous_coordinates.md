@@ -100,7 +100,7 @@ $$
 - What the below shows is that the bottom layer is the Euclidean coordinate space, and in the Homogeneous coordinate space it can be anywhere along the below diagonal line.
 - The reason why the coordinate in homogeneous coordinate space can be anywhere along this line is because of the $\lambda$ factor which is applied to the front of the matrix, meaning it can be any magnitude
 - When converted back to Euclidean, it will return back to its original position, as shown below.
-![](Images/from-homogeneous-to-euclidean-coordinates.png)
+![](from-homogeneous-to-euclidean-coordinates.png)
 
 ## Center of the Coordinate System
 - As the title says, the center point of the coordinate system (depending on the dimensions you're using) centers around zero, with the last dimension being 1
@@ -179,7 +179,7 @@ $$
 - $I$ is a simple $3 \times 3$ identity matrix
 - $t$ is a translation vector along the $x$, $y$ and $z$ axes
 - $0$ is simple just a zero vector transposed
-![](Images/important-transformations.png)
+![](important-transformations.png)
 
 ### Rotation (3 Rotations): 3 Parameters
 ![](important-transformations2.png)
@@ -246,7 +246,7 @@ A & t \\
 $$
 
 ## Transformations in $\mathbb{P}^2$
-![](Images/transformations-in-p.png)
+![](transformations-in-p.png)
 
 ## Transformations
 - Inverting a transformation

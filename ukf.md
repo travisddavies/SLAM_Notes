@@ -7,18 +7,18 @@
 **Unscented transform $\rightarrow$ Unscented Kalman Filter (UKF)**
 
 ## Taylor Approximation (EKF)
-![](Images/taylor_expansion.png)
+![](taylor_expansion.png)
 
 Linearisation of the non-linear function through Taylor expansion
 
 ## Unscented Transform
 - We sample some points according to an existing Gaussian distribution
-![](Images/taylor_expansion1.png)
+![](taylor_expansion1.png)
 - We then remap those points to a new Gaussian distribution, transformed by a non-linear function
-![](Images/unscented_transform.png)
+![](unscented_transform.png)
 - Calculate the new Gaussian distribution from the transformed points
 - This is done by calculating the mean and covariance of the new points to get the new Gaussian distribution
-![](Images/unscented_transform1.png)
+![](unscented_transform1.png)
 
 ## Unscented Transform Overview
 - Compute a set of sigma points
@@ -50,8 +50,8 @@ $$
 - There is no unique solution for $\mathcal{X}^{[i]},w^{[i]}$
 
 ## Sigma Points
-![](Images/sigma_points1.png)
-![](Images/sigma_points2.png)
+![](sigma_points1.png)
+![](sigma_points2.png)
 
 ## Matrix Square Root
 - Defined as $S$ with $\Sigma = SS$
@@ -115,14 +115,14 @@ $$
 \mathcal{X}^{[i]} &= \mu - \bigg(\sqrt{(n+ \lambda)\Sigma}\bigg)_{i-n} & \text{for } i =n+1,\dots, 2n \\
 \end{align}
 $$
-![](Images/points_and_axis.png)
+![](points_and_axis.png)
 
 ## Sigma Points Example
-![](Images/sigma_points_example.png)
+![](sigma_points_example.png)
 
 ## Sigma Point Weights
 - Weight sigma points
-![](Images/sigma_points_weights.png)
+![](sigma_points_weights.png)
 
 ## Recover the Gaussian
 - Compute the Gaussian from weighted and transformed points
@@ -134,10 +134,10 @@ $$
 $$
 
 ### Example
-![](Images/an_ukf_example.png)
+![](an_ukf_example.png)
 
 ### Examples
-![](Images/ukf_examples.png)
+![](ukf_examples.png)
 
 ## Unscented Transform Summary
 - Sigma points
@@ -160,25 +160,25 @@ $$
 ## UT Parameters
 - Free parameters as there is no unique solution
 - Scaled Unscented Transform suggests
-![](Images/other_stuff_i_forgot.png)
+![](other_stuff_i_forgot.png)
 
 ## Examples
-![](Images/even_more_examples_of_ekf.png)
-![](Images/again_even_more_examples_of_ukf.png)
+![](even_more_examples_of_ekf.png)
+![](again_even_more_examples_of_ukf.png)
 
 ## EKF Algorithm
-![](Images/ekf_algorithm_again.png)
+![](ekf_algorithm_again.png)
 
 ## EKF to UKF - Prediction
-![](Images/changing_ekf_to_ukf.png)
+![](changing_ekf_to_ukf.png)
 
 ## UKF Algorithm - Prediction
-![](Images/unscented_kalman_filter_algorithm.png)
-![](Images/ukf_algorithm1.png)
-![](Images/ukf_algorithm2.png)
-![](Images/ukf_algorithm3.png)
-![](Images/ukf_algorithm4.png)
-![](Images/ukf_algorithm5.png)
+![](unscented_kalman_filter_algorithm.png)
+![](ukf_algorithm1.png)
+![](ukf_algorithm2.png)
+![](ukf_algorithm3.png)
+![](ukf_algorithm4.png)
+![](ukf_algorithm5.png)
 
 ## From EKF to UKF - Computing the Covariance
 $$
@@ -194,13 +194,13 @@ $$
 $$
 
 ## UKF vs. EKF
-![](Images/ekf_and_ukf.png)
+![](ekf_and_ukf.png)
 
 ## UKF vs. EKF (Small Covariance)
-![](Images/ukf_vs_ekf_small_covariance.png)
+![](ukf_vs_ekf_small_covariance.png)
 
 ## UKF vs. EKF - Banana Shape
-![](Images/ukf_vs_ekf_banana.png)
+![](ukf_vs_ekf_banana.png)
 
 ## UKF vs. EKF
-![](Images/ukf_vs_ekf.png)
+![](ukf_vs_ekf.png)

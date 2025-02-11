@@ -1,6 +1,6 @@
 # Grid Maps
 ## Features vs. Volumetric Maps
-![](Images/features-vs-volumetric-maps.png)
+![](features-vs-volumetric-maps.png)
 
 ## Features
 - So far, we only used feature maps
@@ -17,15 +17,15 @@
 - Do not rely on a feature detector
 
 ## Example
-![](Images/grid-maps-feature.png)
+![](grid-maps-feature.png)
 
 ## Assumption 1
 - The area that corresponds to a cell is either completely free or occupied
-![](Images/assumption-1.png)
+![](assumption-1.png)
 
 ## Representation
 - Each cell is a **binary random variable** that models the occupancy
-![](Images/representation-gridmaps.png)
+![](representation-gridmaps.png)
 
 ## Occupancy Probability
 - Each cell is a **binary random variable** that models the occupancy
@@ -35,44 +35,44 @@
 
 ## Occupancy Probability Example
 - Each cell is a **binary random variable** that models the occupancy
-![](Images/assumption-2.png)
+![](assumption-2.png)
 
 ## Assumption 2
 - The world is **static** (most mapping systems make this assumption)
-![](Images/assumption21.png)
+![](assumption21.png)
 
 ## Assumption 3
 - The cells (the random variables) are **independent** of each other
-![](Images/assumption2.png)
+![](assumption2.png)
 
 ## Joint Distribution
-![](Images/joint-distribution.png)
+![](joint-distribution.png)
 
 ## Representation
 - The probability distribution of the map is given by the product over the cells
-![](Images/representation2.png)
+![](representation2.png)
 
 ## Example A
-![](Images/example-a.png)
+![](example-a.png)
 
 ## Example B
-![](Images/example-b.png)
+![](example-b.png)
 
 ## Estimating a Map From Data
 - Given sensor data $z_{1:t}$ and the poses $x_{1:t}$ of the sensor, estimate the map
-![](Images/estimating-from-sensor-data.png)
+![](estimating-from-sensor-data.png)
 
 ## Static State Binary Bayes Filter
-![](Images/state-static-bayes-filter.png)
-![](Images/state-static-bayes-filter-1.png)
-![](Images/state-static-bayes-filter-2.png)
-![](Images/state-static-bayes-filter-3.png)
+![](state-static-bayes-filter.png)
+![](state-static-bayes-filter-1.png)
+![](state-static-bayes-filter-2.png)
+![](state-static-bayes-filter-3.png)
 - Here we can remove the $x_t$ because knowing the robot pose doesn't help at all with knowing the gridmap
-![](Images/state-static-bayes-filter-4.png)
-![](Images/state-static-bayes-filter-5.png)
-![](Images/state-static-bayes-filter-6.png)
-![](Images/state-static-bayes-filter-7.png)
-![](Images/state-static-bayes-filter-8.png)
+![](state-static-bayes-filter-4.png)
+![](state-static-bayes-filter-5.png)
+![](state-static-bayes-filter-6.png)
+![](state-static-bayes-filter-7.png)
+![](state-static-bayes-filter-8.png)
 
 ## From Ratio to Probability
 - We can easily turn the ration into the probability (note: this is a common rule in maths)
@@ -123,40 +123,40 @@ l_{t,i} = \text{inv\_sensor\_model}(m_i, x_t, z_t) + l_{t-1,i} - l_0
 $$
 
 ## Occupancy Mapping Algorithm
-![](Images/occupancy_grid_mapping_algo.png)
+![](occupancy_grid_mapping_algo.png)
 
 - Moravec and Elfes proposed occupancy grid mapping in the mid 80'ies
 - Developed for noisy sonar sensors
 - Also called "mapping with known poses"
 
 ## Inverse Sensor Model for Sonar Range Sensors
-![](Images/inverse_sensor_model_2.png)
+![](inverse_sensor_model_2.png)
 In the following, consider the cells along the optical axis (red line)
 
 ## Occupancy Value Depending on the Measured Distance
-![](Images/occupancy_grid_mapping_measured.png)
-![](Images/occupancy_grid_free.png)
-![](Images/occupancy_grid_occ.png)
-![](Images/occupancy_grid_no_info.png)
+![](occupancy_grid_mapping_measured.png)
+![](occupancy_grid_free.png)
+![](occupancy_grid_occ.png)
+![](occupancy_grid_no_info.png)
 
 ## Example: Incremental Updating of Occupancy Grids
-![](Images/example_occupancy_grid.png)
+![](example_occupancy_grid.png)
 
 ## Resulting Map Obtained with 24 Sonar Range Sensors
-![](Images/24_sensor_result.png)
+![](24_sensor_result.png)
 
 ## Resulting Occupancy and Maximum Likelihood Map
-![](Images/resulting_occupancy_grid.png)
+![](resulting_occupancy_grid.png)
 The maximum likelihood map is obtained by rounding the probability for each cell to 0 or 1.
 
 ## Inverse Sensor Model for Laser Range Finders
-![](Images/occupancy_grid_map_graph.png)
+![](occupancy_grid_map_graph.png)
 
 ## Occupancy Grids From Laser Scans to Maps
-![](Images/laser_scans_to_maps.png)
+![](laser_scans_to_maps.png)
 
 ## Example: MIT CSAIL $3^{rd}$ Floor
-![](Images/mit_csail.png)
+![](mit_csail.png)
 
 ## Occupancy Grid Map Summary
 - Occupancy grid maps discretise the space into independent cells
@@ -168,7 +168,7 @@ The maximum likelihood map is obtained by rounding the probability for each cell
 
 # Grid Mapping Meets Reality...
 ## Mapping With Raw Odometry
-![](Images/mapping_with_odometry.png)
+![](mapping_with_odometry.png)
 
 ## Incremental Scan Alignment
 - Motion is noisy, we cannot ignore it
@@ -179,11 +179,11 @@ The maximum likelihood map is obtained by rounding the probability for each cell
 
 ## Pose Correction Using Scan-Matching
 Maximise the likelihood of the current pose relative to the **previous** pose and map
-![](Images/pose_correction_matching.png)
+![](pose_correction_matching.png)
 
 ## Incremental Alignment
-![](Images/incremental_alignment.png)
-![](Images/incremental_alignment2.png)
+![](incremental_alignment.png)
+![](incremental_alignment2.png)
 
 ## Various Different Ways to Realise Scan-Matching
 - Iterative closest point (ICP)
@@ -196,13 +196,13 @@ Maximise the likelihood of the current pose relative to the **previous** pose an
 - ...
 
 ## Example: Aligning Two 3D Maps
-![](Images/aligning_two_scans.png)
+![](aligning_two_scans.png)
 
 ## With and Without Scan-Matching
-![](Images/with_and_without_scan_matching.png)
+![](with_and_without_scan_matching.png)
 
 ## Motion Model for Scan Matching
-![](Images/motion_model_for_scan_matching.png)
+![](motion_model_for_scan_matching.png)
 
 ## Scan Matching Summary
 - Scan-matching improves the pose estimate (and thus mapping) substantially
