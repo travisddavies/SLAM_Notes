@@ -78,8 +78,6 @@ $$
 e_i(x + \Delta x) = \dots
 $$
 
-- With the previous linearization, we can fix $x$ and carry out the minimisation in the increments $\Delta x$ 
-- We replace the Taylor expansion in the squared error terms:
 $$
 \begin{align}
 e_i(x + \Delta x) &= e^T_i(x + \Delta x)\Omega_i e_i(x + \Delta x) \\
@@ -106,7 +104,7 @@ $$
 F(x + \Delta x) &\backsimeq \sum_i (c_i + b_i^T \Delta x + \Delta x^T H_i \Delta x) \\
 &= \underbrace{\sum_i c_i}_{c_i} + 2 \underbrace{(\sum_i b_i^T)}_{b^T} \Delta x + \Delta x^T \underbrace{(\sum_i H_i)}_H \Delta x \\
 &= c + 2b^T \Delta x + \Delta x^T H \Delta x \\
-\text{with}
+\text{with }
 b^T &= \sum_i e^T_i \Omega_i J_i \\
 H &= \sum_i J_i^T \Omega J_i
 \end{align}
@@ -163,10 +161,6 @@ $$
 e_i(x + \Delta x) \simeq e_i(x) + J_i \Delta x
 $$
 - Compute the terms for the linear system $b^T = \sum_i e^T_i \Omega_i J_i$      $H = \sum_i J^T_i \Omega_i J_i$
-- Solve the linear system
-$$
-\Delta x^* = -H^{-1}b
-$$
 - Solve the linear system
 $$
 \Delta x^* = -H^{-1}b
@@ -297,7 +291,7 @@ $$
 $$
 
 ## Minimising the Squared Error is Equivalent to Maximising the Log Likelihood of Independent Gaussian Distributions
-with individual error temrs for the motions, measurements, and prior
+with individual error terms for the motions, measurements, and prior
 $$
 \text{argmax} \log p(x_{0:t} | z_{1:t}, u_{1:t}) = \text{argmin } e_p(x) + \sum_t[e_{u_t}(x) + e_{z_t}(x)]
 $$
