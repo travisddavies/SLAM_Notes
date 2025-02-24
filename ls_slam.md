@@ -1,5 +1,4 @@
 # Least Squares Approach to SLAM
-
 ## Three Main SLAM Paradigms
 ![](Images/three-main-paradigms1.png)
 
@@ -30,15 +29,12 @@
 - Every node in the graph corresponds to a robot position and a laser measurement
 - An edge between two nodes represents a spatial constraint between the nodes
 ![](Images/graph_based_slam_nutshell.png)
-
 - Every node in the graph corresponds to a robot position and a laser measurement
 - An edge between two nodes represents a spatial constraint between the nodes
 ![](Images/graph_based_slam_nutshell1.png)
-
 - Once we have the graph, we determine the most likely map by correcting the nodes
 ... like this
 ![](Images/graph_based_slam_nutshell3.png)
-
 - Then we can render a map based on the known poses
 ![](Images/graph_based_slam_nutshell4.png)
 
@@ -46,12 +42,11 @@
 - Interplay of front-end and back-end
 - Map helps to determine constraints by reducing the search space
 - Topic today: optimization
-
 ![](Images/overall_slam_system.png)
 
 ## The Graph
 - It consists of $n$ nodes $x = x_{1:n}$
-- Each $x_i$ is a @D or 3D transformation (the pose of the robot at time $t_i$)
+- Each $x_i$ is a 2D or 3D transformation (the pose of the robot at time $t_i$)
 - A constraint/edge exists between the nodes $x_i$ and $x_j$ if...
 ![](Images/the_graph.png)
 
@@ -61,7 +56,7 @@
 ![](Images/create_an_edge_if.png)
 
 ## Create an Edge If... (2)
- - ...the robot observes the same part of the environment from $xs_i$ and from $x_j$
+ - ...the robot observes the same part of the environment from $x_i$ and from $x_j$
 ![](Images/create_an_edge_if1.png)
 - ...the robot observes the same part of the environment from $x_i$ and from $x_j$
 - Construct a **virtual measurement** about the position of $x_j$ seen from $x_i$
@@ -85,14 +80,8 @@ $$
 - H.C are a system of coordinates used in projective geometry
 - Projective geometry is an alternative algebraic representation of geometric objects and transformations
 - Formulas involving H.C. are often simpler than in the Cartesian world
-- A single matrix can represent affine transformations and projective transformations
-
-- H.C. are a system of coordinates used in projective geometry
-- Projective geometry is an alternative algebraic representation of geometric objects and transformations 
-- Formulas involving H.C. are often simpler than in the Cartesian world
 - **A single matrix can represent affine transformations and projective transformations**
 
-## Homogeneous Coordinates
 - N-dim space expressed in $N+1$ dim
 - 4 dim. for modeling the 3D space
 - To HC: $(x, y, z)^T \rightarrow (x, y, z, 1)^T$
