@@ -1,5 +1,4 @@
 # SLAM Front-Ends
-
 ## Graph-Based SLAM
 - Constraints connect the nodes through odometry and observations
 ![](Images/graph_based_slam4.png)
@@ -33,8 +32,6 @@
 - Apply Iterative Closest Point algorithm
 - Evaluate match
 - Accept match based on a threshold
-
-**Problems?**
 
 ## Problems
 - ICP is sensitive to the intitial guess
@@ -200,4 +197,35 @@ $\rightarrow$ 3D positions of **two** images features is sufficient to determine
 - Densest subgraph problem
 
 ## Consistent Local Matches
-- W
+- We want find $v$ that maximises $\lambda(v)$ 
+$$
+\lambda(v) = \frac{v^TAv}{v^Tv}
+$$
+- Treat as continuous problem
+- Derive and set to zero
+$$
+\frac{\partial \lambda (v)}{\partial v} = 0
+$$
+- Which leads to (for symmetric $A$)
+$$
+\frac{\partial \lambda (v)}{\partial v} = 0 \iff Av = \lambda v
+$$
+
+## Consistent Local Matches
+- $Av = \lambda v$: Eigenvalue/vector problem
+- The dominant eigenvector $v_1$ maximises
+$$
+\lambda(v) = \frac{v^T A v}{v^T v}
+$$
+- The hypothesis represented by $v_1$ is maximally self-consistent subset
+- If $\lambda_1/\lambda_2$ is large (e.g., $\lambda_1/\lambda_2 > 2$) then $v_1$ is regarded as locally unambiguous
+- Discretise $v_1$ after maximisation
+
+## Global Consistency
+- **Correct method**: Can two copies of $A$ be arranged so that they both fit inside the covariance ellipse?
+- **Approximation**: Is the dimension of $A$ at least half the length of the dominant axis of the covariance ellipse?
+- Potential failures for narrow local matches
+![](Images/global_consistencies.png)
+
+## Olson's Proposal
+![](Images/olsons_proposal1.png)
